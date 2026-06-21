@@ -1,0 +1,1035 @@
+/* ===================================================
+   DormEase — Design Tokens
+   Concept: the front-desk logbook and the key rack.
+   Every room is a numbered pigeonhole. Every entry
+   in a table reads like a ledger line.
+=================================================== */
+
+:root{
+
+    --ink:#1B1F2A;
+
+    --ink-soft:#3D4252;
+
+    --paper:#F5F2EC;
+
+    --panel:#FFFFFF;
+
+    --pine:#2F6F5E;
+
+    --pine-dark:#23574A;
+
+    --brass:#D9A441;
+
+    --brass-dark:#B9842C;
+
+    --stamp:#B23A2E;
+
+    --stamp-dark:#94291F;
+
+    --rule:#D8D3C6;
+
+    --rule-strong:#1B1F2A;
+
+    --shadow:0 12px 28px rgba(27,31,42,0.10);
+
+}
+
+*{
+
+    box-sizing:border-box;
+
+}
+
+body{
+
+    background:var(--paper);
+
+    color:var(--ink);
+
+    font-family:'Inter', -apple-system, sans-serif;
+
+    background-image:linear-gradient(var(--rule) 1px, transparent 1px);
+
+    background-size:100% 42px;
+
+    background-attachment:local;
+
+}
+
+h1, h2, h3, h4, h5, .navbar-brand{
+
+    font-family:'Space Grotesk', 'Inter', sans-serif;
+
+    letter-spacing:-0.01em;
+
+}
+
+.mono, .room-tag, .ledger-amount, .ledger-id{
+
+    font-family:'JetBrains Mono', 'Courier New', monospace;
+
+}
+
+/* ===================================================
+   Top bar — ruled ledger header
+=================================================== */
+
+.navbar{
+
+    background:var(--ink) !important;
+
+    box-shadow:0 2px 0 var(--brass);
+
+    padding-top:16px;
+
+    padding-bottom:16px;
+
+    border-bottom:4px solid var(--brass);
+
+}
+
+.navbar-brand{
+
+    font-weight:700;
+
+    font-size:1.35rem;
+
+    color:var(--paper) !important;
+
+    letter-spacing:0.01em;
+
+    display:inline-flex;
+
+    align-items:center;
+
+}
+
+.navbar-brand::before{
+
+    content:"⌗";
+
+    color:var(--brass);
+
+    margin-right:8px;
+
+    font-weight:700;
+}
+
+/* ===================================================
+   Page surface
+=================================================== */
+
+.container{
+
+    background:transparent;
+
+}
+
+.page-title{
+
+    font-weight:700;
+
+    margin-bottom:6px;
+
+    color:var(--ink);
+
+}
+
+.page-eyebrow{
+
+    font-family:'JetBrains Mono', monospace;
+
+    font-size:0.72rem;
+
+    text-transform:uppercase;
+
+    letter-spacing:0.14em;
+
+    color:var(--pine-dark);
+
+    font-weight:700;
+
+    margin-bottom:10px;
+
+    display:block;
+}
+
+.section-title{
+
+    margin-top:28px;
+
+    margin-bottom:16px;
+
+    font-weight:700;
+}
+
+/* ===================================================
+   Cards — ledger panels, square corners, top tab
+=================================================== */
+
+.card{
+
+    border:1px solid var(--ink);
+
+    border-radius:4px;
+
+    background:var(--panel);
+
+    box-shadow:var(--shadow);
+
+}
+
+.card-header{
+
+    font-weight:700;
+
+    font-family:'Space Grotesk', sans-serif;
+
+    border-radius:0 !important;
+
+    border-bottom:1px solid var(--ink);
+
+    padding:14px 20px;
+
+    background:var(--paper) !important;
+
+    color:var(--ink) !important;
+
+    letter-spacing:0.01em;
+
+    position:relative;
+}
+
+.card-header::before{
+
+    content:"";
+
+    position:absolute;
+
+    left:20px;
+
+    top:-1px;
+
+    width:28px;
+
+    height:4px;
+
+    background:var(--brass);
+}
+
+.card-header.bg-primary{
+
+    background:var(--ink) !important;
+
+    color:var(--paper) !important;
+}
+
+.card-header.bg-primary::before{
+
+    background:var(--brass);
+}
+
+.card-header.bg-success{
+
+    background:var(--pine) !important;
+
+    color:#fff !important;
+}
+
+.card-header.bg-success::before{
+
+    background:var(--paper);
+}
+
+.card-header.bg-danger{
+
+    background:var(--stamp) !important;
+
+    color:#fff !important;
+}
+
+.card-header.bg-danger::before{
+
+    background:var(--paper);
+}
+
+.card-header.bg-warning{
+
+    background:var(--brass) !important;
+
+    color:var(--ink) !important;
+}
+
+.card-header.bg-warning::before{
+
+    background:var(--ink);
+}
+
+.card-body{
+
+    padding:24px;
+}
+
+/* ===================================================
+   Dashboard tiles — pigeonhole key rack
+=================================================== */
+
+.dashboard-card{
+
+    text-align:left;
+
+    padding:22px 20px;
+
+    transition:transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+
+    position:relative;
+
+    border:1px solid var(--ink);
+
+    overflow:hidden;
+}
+
+.dashboard-card::after{
+
+    content:"";
+
+    position:absolute;
+
+    top:14px;
+
+    right:14px;
+
+    width:10px;
+
+    height:10px;
+
+    border-radius:50%;
+
+    background:var(--brass);
+
+    box-shadow:0 0 0 3px rgba(217,164,65,0.2);
+}
+
+.dashboard-card:hover{
+
+    transform:translateY(-3px);
+
+    border-color:var(--pine);
+
+    box-shadow:0 16px 30px rgba(27,31,42,0.16);
+}
+
+.dashboard-card .tile-icon{
+
+    font-size:26px;
+
+    margin-bottom:14px;
+
+    display:block;
+}
+
+.dashboard-card h4{
+
+    margin:0;
+
+    font-size:1.05rem;
+
+    color:var(--ink);
+
+    font-weight:700;
+}
+
+.dashboard-card .tile-tag{
+
+    font-family:'JetBrains Mono', monospace;
+
+    font-size:0.68rem;
+
+    text-transform:uppercase;
+
+    letter-spacing:0.12em;
+
+    color:var(--ink-soft);
+
+    margin-top:6px;
+
+    display:block;
+}
+
+/* ===================================================
+   Buttons — stamped ticket feel
+=================================================== */
+
+.btn{
+
+    border-radius:3px;
+
+    font-weight:600;
+
+    padding:8px 18px;
+
+    font-family:'Space Grotesk', sans-serif;
+
+    letter-spacing:0.01em;
+
+    border-width:1.5px;
+}
+
+.btn-primary{
+
+    background:var(--ink);
+
+    border-color:var(--ink);
+
+    color:var(--paper);
+}
+
+.btn-primary:hover{
+
+    background:var(--ink-soft);
+
+    border-color:var(--ink-soft);
+
+    color:var(--paper);
+}
+
+.btn-success{
+
+    background:var(--pine);
+
+    border-color:var(--pine);
+}
+
+.btn-success:hover{
+
+    background:var(--pine-dark);
+
+    border-color:var(--pine-dark);
+}
+
+.btn-danger{
+
+    background:var(--stamp);
+
+    border-color:var(--stamp);
+}
+
+.btn-danger:hover{
+
+    background:var(--stamp-dark);
+
+    border-color:var(--stamp-dark);
+}
+
+.btn-warning{
+
+    background:var(--brass);
+
+    border-color:var(--brass);
+
+    color:var(--ink);
+}
+
+.btn-warning:hover{
+
+    background:var(--brass-dark);
+
+    border-color:var(--brass-dark);
+
+    color:var(--ink);
+}
+
+.btn-light{
+
+    background:transparent;
+
+    border-color:rgba(245,242,236,0.4);
+
+    color:var(--paper);
+}
+
+.btn-light:hover{
+
+    background:rgba(245,242,236,0.12);
+
+    border-color:var(--brass);
+
+    color:var(--paper);
+}
+
+/* ===================================================
+   Tables — ruled ledger lines
+=================================================== */
+
+.table{
+
+    vertical-align:middle;
+
+    margin-bottom:0;
+}
+
+.table thead, .table tr th{
+
+    background:var(--ink);
+
+    color:var(--paper);
+
+    font-family:'JetBrains Mono', monospace;
+
+    font-size:0.72rem;
+
+    text-transform:uppercase;
+
+    letter-spacing:0.1em;
+
+    font-weight:600;
+
+    border-bottom:none;
+}
+
+.table td, .table th{
+
+    border-color:var(--rule);
+
+    padding:12px 14px;
+}
+
+.table tbody tr:hover{
+
+    background:rgba(47,111,94,0.05);
+}
+
+/* ===================================================
+   Forms
+=================================================== */
+
+.form-control, .form-select{
+
+    border-radius:3px;
+
+    border:1.5px solid var(--ink-soft);
+
+    padding:9px 13px;
+
+    background:var(--panel);
+}
+
+.form-control:focus, .form-select:focus{
+
+    border-color:var(--pine);
+
+    box-shadow:0 0 0 0.2rem rgba(47,111,94,0.15);
+}
+
+label{
+
+    font-weight:700;
+
+    font-size:0.78rem;
+
+    text-transform:uppercase;
+
+    letter-spacing:0.08em;
+
+    color:var(--ink-soft);
+
+    margin-bottom:6px;
+
+    display:block;
+}
+
+/* ===================================================
+   Alerts — stamped notices
+=================================================== */
+
+.alert{
+
+    border:1.5px solid var(--ink);
+
+    border-radius:3px;
+
+    border-left-width:6px;
+
+    background:var(--panel);
+
+    font-weight:500;
+}
+
+.alert-success{
+
+    border-left-color:var(--pine);
+
+    color:var(--pine-dark);
+}
+
+.alert-info{
+
+    border-left-color:var(--brass);
+
+    color:var(--ink);
+}
+
+.alert-primary{
+
+    border-left-color:var(--ink);
+
+    color:var(--ink);
+
+    background:var(--panel);
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    flex-wrap:wrap;
+
+    gap:10px;
+}
+
+/* ===================================================
+   Status badges — rubber-stamp marks
+=================================================== */
+
+.badge-status{
+
+    display:inline-block;
+
+    padding:4px 11px;
+
+    border-radius:3px;
+
+    font-size:0.7rem;
+
+    font-weight:700;
+
+    text-transform:uppercase;
+
+    letter-spacing:0.08em;
+
+    font-family:'JetBrains Mono', monospace;
+
+    border:1.5px solid currentColor;
+}
+
+.badge-paid{
+
+    color:var(--pine-dark);
+
+    background:rgba(47,111,94,0.08);
+}
+
+.badge-unpaid{
+
+    color:var(--stamp);
+
+    background:rgba(178,58,46,0.08);
+}
+
+.badge-pending{
+
+    color:var(--brass-dark);
+
+    background:rgba(217,164,65,0.12);
+}
+
+.badge-progress{
+
+    color:#2D5C8A;
+
+    background:rgba(45,92,138,0.08);
+}
+
+.badge-completed{
+
+    color:var(--pine-dark);
+
+    background:rgba(47,111,94,0.08);
+}
+
+.badge-accepted{
+
+    color:var(--pine-dark);
+
+    background:rgba(47,111,94,0.08);
+}
+
+.badge-rejected{
+
+    color:var(--stamp);
+
+    background:rgba(178,58,46,0.08);
+}
+
+/* ===================================================
+   Room / ID tags — ticket-stub style
+=================================================== */
+
+.room-tag{
+
+    display:inline-block;
+
+    padding:3px 10px;
+
+    background:var(--ink);
+
+    color:var(--paper);
+
+    border-radius:3px;
+
+    font-size:0.85rem;
+
+    font-weight:700;
+
+    letter-spacing:0.03em;
+}
+
+.ledger-amount{
+
+    font-weight:700;
+
+    color:var(--ink);
+}
+
+.ledger-id{
+
+    color:var(--ink-soft);
+
+    font-size:0.85rem;
+}
+
+/* ===================================================
+   Misc
+=================================================== */
+
+.text-muted-soft{
+
+    color:var(--ink-soft);
+}
+
+hr{
+
+    border-top:1.5px dashed var(--rule);
+
+    opacity:1;
+}
+
+a{
+
+    color:var(--pine-dark);
+}
+
+a:hover{
+
+    color:var(--pine);
+}
+
+/* ===================================================
+   Receipt / print page (used by receipt.php)
+=================================================== */
+
+.de-shell{
+
+    background:var(--paper);
+
+    color:var(--ink);
+
+    font-family:'Inter', -apple-system, sans-serif;
+
+    min-height:100vh;
+
+    background-image:linear-gradient(var(--rule) 1px, transparent 1px);
+
+    background-size:100% 42px;
+}
+
+.de-topbar{
+
+    background:var(--ink);
+
+    color:var(--paper);
+
+    padding:16px 30px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    border-bottom:4px solid var(--brass);
+}
+
+.de-brand{
+
+    color:var(--paper);
+
+    text-decoration:none;
+
+    font-family:'Space Grotesk', sans-serif;
+
+    font-weight:700;
+
+    font-size:1.25rem;
+}
+
+.de-brand-mark{
+
+    margin-right:6px;
+}
+
+.de-topbar-right a{
+
+    text-decoration:none;
+}
+
+.de-main{
+
+    max-width:760px;
+
+    margin:0 auto;
+
+    padding:40px 20px;
+}
+
+.de-print-sheet{
+
+    background:var(--panel);
+
+    border:1.5px solid var(--ink);
+
+    border-radius:4px;
+
+    box-shadow:var(--shadow);
+
+    padding:36px;
+
+    position:relative;
+}
+
+.de-print-sheet::before{
+
+    content:"";
+
+    position:absolute;
+
+    left:32px;
+
+    top:-1.5px;
+
+    width:34px;
+
+    height:5px;
+
+    background:var(--brass);
+}
+
+.de-print-head{
+
+    display:flex;
+
+    align-items:flex-start;
+
+    justify-content:space-between;
+
+    border-bottom:1.5px dashed var(--rule);
+
+    padding-bottom:18px;
+
+    margin-bottom:18px;
+}
+
+.de-muted{
+
+    color:var(--ink-soft);
+
+    font-size:0.85rem;
+}
+
+.de-table-wrap{
+
+    overflow-x:auto;
+}
+
+.de-table{
+
+    width:100%;
+
+    border-collapse:collapse;
+}
+
+.de-table th{
+
+    text-align:left;
+
+    font-family:'JetBrains Mono', monospace;
+
+    font-size:0.7rem;
+
+    text-transform:uppercase;
+
+    letter-spacing:0.1em;
+
+    color:var(--paper);
+
+    background:var(--ink);
+
+    padding:10px 10px;
+}
+
+.de-table td{
+
+    padding:12px 10px;
+
+    border-bottom:1px solid var(--rule);
+}
+
+.de-flex-between{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+}
+
+.de-badge{
+
+    display:inline-block;
+
+    padding:3px 11px;
+
+    border-radius:3px;
+
+    font-size:0.7rem;
+
+    font-weight:700;
+
+    font-family:'JetBrains Mono', monospace;
+
+    border:1.5px solid currentColor;
+}
+
+.de-badge-good{
+
+    color:var(--pine-dark);
+
+    background:rgba(47,111,94,0.08);
+}
+
+.de-badge-pending{
+
+    color:var(--brass-dark);
+
+    background:rgba(217,164,65,0.12);
+}
+
+.de-badge-bad{
+
+    color:var(--stamp);
+
+    background:rgba(178,58,46,0.08);
+}
+
+.de-actions{
+
+    margin-top:28px;
+
+    display:flex;
+
+    gap:10px;
+
+    justify-content:flex-end;
+}
+
+.de-btn{
+
+    display:inline-block;
+
+    padding:10px 20px;
+
+    border-radius:3px;
+
+    text-decoration:none;
+
+    font-weight:600;
+
+    font-family:'Space Grotesk', sans-serif;
+
+    border:1.5px solid transparent;
+
+    cursor:pointer;
+
+    font-size:0.95rem;
+}
+
+.de-btn-clay{
+
+    background:var(--ink);
+
+    color:var(--paper);
+
+    border:1.5px solid var(--ink);
+}
+
+.de-btn-clay:hover{
+
+    background:var(--ink-soft);
+
+    color:var(--paper);
+}
+
+.de-btn-ghost{
+
+    background:transparent;
+
+    border:1.5px solid var(--ink);
+
+    color:var(--ink);
+}
+
+@media print{
+
+    .no-print{
+
+        display:none;
+    }
+
+    .de-main{
+
+        padding:0;
+    }
+
+    .de-shell{
+
+        background-image:none;
+    }
+
+    .de-print-sheet{
+
+        border:none;
+
+        box-shadow:none;
+    }
+}
+
+/* ===================================================
+   Responsive
+=================================================== */
+
+@media (max-width: 767px){
+
+    .alert-primary{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+    }
+
+    .card-body{
+
+        padding:18px;
+    }
+}
