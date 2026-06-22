@@ -105,16 +105,7 @@ h1, h2, h3, h4, h5, .navbar-brand{
 
 }
 
-.navbar-brand::before{
 
-    content:"⌗";
-
-    color:var(--brass);
-
-    margin-right:8px;
-
-    font-weight:700;
-}
 
 /* ===================================================
    Page surface
