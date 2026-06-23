@@ -202,32 +202,6 @@ if (isset($_POST['remove']))
     $message = "Resident removed.";
 }
 
-if (isset($_POST['delete_resident']))
-{
-    $userID = $_POST['user_id'];
-
-    $roomID = $_POST['room_id'];
-
-    $conn->query("
-
-        DELETE FROM users
-
-        WHERE id='$userID'
-
-    ");
-
-    $conn->query("
-
-        UPDATE rooms
-
-        SET occupied=occupied-1
-
-        WHERE room_id='$roomID'
-
-    ");
-
-    $message = "Resident deleted.";
-}
    if(isset($_POST['approve']))
 {
     $requestID = $_POST['request_id'];
@@ -956,11 +930,7 @@ name="remove"
 value="Remove"
 class="btn btn-warning btn-sm">
 
-<input
-type="submit"
-name="delete_resident"
-value="Delete"
-class="btn btn-danger btn-sm">
+
 
 </form>
 
