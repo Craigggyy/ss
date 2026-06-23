@@ -6,6 +6,16 @@ include "includes/db.php";
 
 $message = "";
 
+if(!isset($_SESSION['otp_sent']))
+{
+    $_SESSION['otp_sent'] = false;
+}
+
+if(!isset($_SESSION['otp_verified']))
+{
+    $_SESSION['otp_verified'] = false;
+}
+
 if(isset($_COOKIE['remember']))
 {
     $_SESSION['loggedin']=true;
@@ -352,13 +362,14 @@ Do not share this code.
         )
         {
             $message = "OTP Sent Successfully.";
+            $showForgot = true;
         }
         else
-        {
-            $message = "Failed to send OTP.";
+{
+    $message = "Failed to send OTP.";
 
-            unset($_SESSION['otp_sent']);
-        }
+    $_SESSION['otp_sent'] = false;
+}
     }
     else
     {
@@ -429,27 +440,15 @@ if (isset($_POST['changepassword']))
 
             ");
 
-            unset($_SESSION['otp']);
+            $_SESSION['otp'] = false;
 
-            unset($_SESSION['otp_sent']);
+$_SESSION['otp_sent'] = false;
 
-            unset($_SESSION['otp_verified']);
+$_SESSION['otp_verified'] = false;
 
-            unset($_SESSION['reset_email']);
+$_SESSION['reset_email'] = "";
 
-            $message = "Password Updated Successfully.";
-
-unset($_SESSION['otp']);
-
-unset($_SESSION['otp_sent']);
-
-unset($_SESSION['otp_verified']);
-
-unset($_SESSION['reset_email']);
-
-header("Refresh:2; url=login.php");
-
-exit();
+$message = "Password Updated Successfully.";
         }
     }
 }
@@ -802,7 +801,7 @@ href="assets/css/style.css">
     </div>
 
     <?php
-      $showForgot = isset($_SESSION['otp_sent']) || isset($_SESSION['otp_verified']);
+      $showForgot = false;
       $showRegister = ($message == "Registration Successful." || (isset($_POST['register']) && $message != ""));
     ?>
 
@@ -957,9 +956,8 @@ required>
 
       <p class="section-label">Forgot Password</p>
 
-      <?php if (!isset($_SESSION['otp_sent'])): ?>
-
-        <span class="step-badge">Step 1 of 3 &mdash; Enter Email</span>
+<?php if($_SESSION['otp_sent'] == false): ?>
+          <span class="step-badge">Step 1 of 3 &mdash; Enter Email</span>
 
         <form method="POST">
           <div class="mb-3">
@@ -977,8 +975,7 @@ required>
             class="btn-otp">
         </form>
 
-      <?php elseif ($_SESSION['otp_verified'] == false): ?>
-
+<?php elseif($_SESSION['otp_sent']==true && $_SESSION['otp_verified']==false): ?>
         <span class="step-badge">Step 2 of 3 &mdash; Verify OTP</span>
 
         <form method="POST">
@@ -1026,24 +1023,96 @@ required>
 </div>
 
 <script>
-function showPanel(panel) {
-  document.getElementById('loginPanel').style.display    = 'none';
-  document.getElementById('registerPanel').style.display = 'none';
-  document.getElementById('forgotPanel').style.display   = 'none';
+function showPanel(panel)
+{
+  document.getElementById('loginPanel').style.display='none';
 
-  if (panel === 'login')    document.getElementById('loginPanel').style.display    = 'block';
-  if (panel === 'register') document.getElementById('registerPanel').style.display = 'block';
-  if (panel === 'forgot')   document.getElementById('forgotPanel').style.display   = 'block';
+  document.getElementById('registerPanel').style.display='none';
+
+  document.getElementById('forgotPanel').style.display='none';
+
+  if(panel=='login')
+  {
+    document.getElementById('loginPanel').style.display='block';
+  }
+
+  if(panel=='register')
+  {
+    document.getElementById('registerPanel').style.display='block';
+  }
+
+  if(panel=='forgot')
+  {
+    document.getElementById('forgotPanel').style.display='block';
+  }
 }
 
 (function() {
-  <?php if ($showForgot): ?>
-    showPanel('forgot');
-  <?php elseif ($showRegister): ?>
-    showPanel('register');
-  <?php else: ?>
-    showPanel('login');
-  <?php endif; ?>
+
+<?php
+
+if(isset($_POST['sendotp']))
+
+{
+
+?>
+
+showPanel('forgot');
+
+<?php
+
+}
+
+elseif(isset($_POST['verifyotp']))
+
+{
+
+?>
+
+showPanel('forgot');
+
+<?php
+
+}
+
+elseif(isset($_POST['changepassword']))
+
+{
+
+?>
+
+showPanel('login');
+
+<?php
+
+}
+
+elseif($showRegister)
+
+{
+
+?>
+
+showPanel('register');
+
+<?php
+
+}
+
+else
+
+{
+
+?>
+
+showPanel('login');
+
+<?php
+
+}
+
+?>
+
 })();
 </script>
 
