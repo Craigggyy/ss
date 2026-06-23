@@ -132,43 +132,29 @@ if ($_SESSION['role'] == "admin")
         else
 
         {
+            $conn->query("
+
+            UPDATE users
+
+            SET assigned_room='$newRoom'
+
+            WHERE id='$userID'
+
+            ");
+
             $newBill = $room['monthly_bill'];
-
-$conn->query("
-
-UPDATE users
-
-SET assigned_room='$newRoom'
-
-WHERE id='$userID'
-
-");
-
-$conn->query("
-
-UPDATE room_requests
-
-SET room_id='$newRoom',
-
-monthly_bill='$newBill'
-
-WHERE user_id='$userID'
-
-AND status='Accepted'
-
-");
-
-$month = date("F Y");
 
 $conn->query("
 
 UPDATE billing
 
-SET amount='$newBill'
+SET
+
+room_id='$newRoom',
+
+amount='$newBill'
 
 WHERE user_id='$userID'
-
-AND month='$month'
 
 ");
 
@@ -274,71 +260,6 @@ if (isset($_POST['remove']))
 
         ");
 
-        $newBill = $room['monthly_bill'];
-
-$month = date("F Y");
-
-$checkBill = $conn->query("
-
-SELECT *
-
-FROM billing
-
-WHERE user_id='$userID'
-
-AND month='$month'
-
-");
-
-if($checkBill->num_rows == 0)
-{
-    $conn->query("
-
-    INSERT INTO billing
-
-    (
-
-    user_id,
-
-    month,
-
-    amount,
-
-    status
-
-    )
-
-    VALUES
-
-    (
-
-    '$userID',
-
-    '$month',
-
-    '$newBill',
-
-    'Unpaid'
-
-    )
-
-    ");
-}
-else
-{
-    $conn->query("
-
-    UPDATE billing
-
-    SET amount='$newBill'
-
-    WHERE user_id='$userID'
-
-    AND month='$month'
-
-    ");
-}
-
        $newBill = $room['monthly_bill'];
 
 $month = date("F Y");
@@ -435,147 +356,33 @@ rel="stylesheet">
 rel="stylesheet"
 href="assets/css/style.css">
 
-<style>
-
-.dormease-navbar{
-
-background:
-
-rgba(10,10,15,.72)!important;
-
-backdrop-filter:blur(28px);
-
-padding:0;
-
-height:90px;
-
-}
-
-.dormease-container{
-
-max-width:1000px;
-
-display:flex;
-
-align-items:center;
-
-justify-content:space-between;
-
-height:100%;
-
-}
-
-.navbar-brand{
-
-font-family:'Plus Jakarta Sans',sans-serif;
-
-font-size:30px;
-
-font-weight:800;
-
-color:#fff!important;
-
-display:flex;
-
-align-items:center;
-
-gap:10px;
-
-text-decoration:none;
-
-}
-
-.navbar-logo{
-
-width:70px;
-
-height:70px;
-
-object-fit:contain;
-
-}
-
-.header-btn{
-
-display:inline-flex;
-
-align-items:center;
-
-justify-content:center;
-
-padding:10px 24px;
-
-border-radius:999px;
-
-font-size:16px;
-
-font-weight:700;
-
-text-decoration:none;
-
-color:#fff;
-
-background:
-
-rgba(255,255,255,.10);
-
-border:1px solid rgba(255,255,255,.14);
-
-}
-
-.header-btn:hover{
-
-background:
-
-rgba(255,255,255,.18);
-
-color:#fff;
-
-}
-
-</style>
-
 </head>
 
 <body>
 
-<nav class="navbar navbar-dark dormease-navbar">
+<nav class="navbar navbar-dark">
 
-<div class="container dormease-container">
+<div class="container">
 
-<a
-href="dashboard.php"
-class="navbar-brand">
-
-<img
-
-src="image/2.png"
-
-class="navbar-logo"
-
->
+<a class="navbar-brand">
 
 DormEase
 
 </a>
 
-<div class="d-flex gap-2">
+<div>
 
 <?php
 
-if($_SESSION['role']=="admin")
+if ($_SESSION['role'] == "admin")
 
 {
 
 ?>
 
 <a
-
 href="manageroom.php"
-
-class="header-btn"
-
->
+class="btn btn-light me-2">
 
 Manage Rooms
 
@@ -588,12 +395,8 @@ Manage Rooms
 ?>
 
 <a
-
 href="dashboard.php"
-
-class="header-btn"
-
->
+class="btn btn-light">
 
 Dashboard
 
