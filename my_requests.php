@@ -1,4 +1,3 @@
-```php
 <?php
 
 session_start();
@@ -347,4 +346,4 @@ while($row = $history->fetch_assoc())
 </body>
 
 </html>
-```
+
