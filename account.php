@@ -307,7 +307,41 @@ class="btn btn-primary">
 </form>
 
 <hr>
+<?php
 
+if(!empty($userData['student_id']))
+
+{
+
+?>
+
+<div class="text-center mb-4">
+
+<img
+
+src="uploads/studentid/<?php echo $userData['student_id']; ?>"
+
+style="
+
+width:250px;
+
+height:160px;
+
+object-fit:cover;
+
+border-radius:10px;
+
+border:1px solid #ccc;
+
+">
+
+</div>
+
+<?php
+
+}
+
+?>
 <h5>
 
 Upload Student ID

@@ -6,6 +6,23 @@ include "includes/db.php";
 
 $message = "";
 
+if(isset($_COOKIE['remember']))
+{
+    $_SESSION['loggedin']=true;
+
+    $_SESSION['user_id']=$_COOKIE['user_id'];
+
+    $_SESSION['fullname']=$_COOKIE['fullname'];
+
+    $_SESSION['email']=$_COOKIE['email'];
+
+    $_SESSION['role']=$_COOKIE['role'];
+
+    header("Location: dashboard.php");
+
+    exit();
+}
+
 if (isset($_POST['register']))
 {
     $fullname = $_POST['fullname'];
@@ -15,6 +32,21 @@ if (isset($_POST['register']))
     $username = $_POST['username'];
 
     $password = $_POST['password'];
+
+    $studentid = "";
+
+if(!empty($_FILES['studentid']['name']))
+{
+    $studentid = time().$_FILES['studentid']['name'];
+
+    move_uploaded_file(
+
+        $_FILES['studentid']['tmp_name'],
+
+        "uploads/studentid/".$studentid
+
+    );
+}
 
     $check = $conn->query("
 
@@ -46,39 +78,43 @@ if (isset($_POST['register']))
 
             INSERT INTO users
 
-            (
+(
 
-            fullname,
+fullname,
 
-            email,
+email,
 
-            username,
+username,
 
-            password,
+password,
 
-            role,
+role,
 
-            status
+status,
 
-            )
+student_id
+
+)
 
             VALUES
 
-            (
+(
 
-            '$fullname',
+'$fullname',
 
-            '$email',
+'$email',
 
-            '$username',
+'$username',
 
-            '$password',
+'$password',
 
-            'user',
+'user',
 
-            'active'
+'active',
 
-            )
+'$studentid'
+
+)
 
         ");
 
@@ -143,6 +179,69 @@ if (isset($_POST['login']))
                 $_SESSION['email'] = $row['email'];
 
                 $_SESSION['role'] = $row['role'];
+
+                if(isset($_POST['remember']))
+{
+    setcookie(
+
+    "remember",
+
+    true,
+
+    time()+604800,
+
+    "/"
+
+    );
+
+    setcookie(
+
+    "user_id",
+
+    $row['id'],
+
+    time()+604800,
+
+    "/"
+
+    );
+
+    setcookie(
+
+    "fullname",
+
+    $row['fullname'],
+
+    time()+604800,
+
+    "/"
+
+    );
+
+    setcookie(
+
+    "email",
+
+    $row['email'],
+
+    time()+604800,
+
+    "/"
+
+    );
+
+    setcookie(
+
+    "role",
+
+    $row['role'],
+
+    time()+604800,
+
+    "/"
+
+    );
+}
 
                 $token = session_id();
 
@@ -732,6 +831,29 @@ href="assets/css/style.css">
 
         <div class="d-flex justify-content-between align-items-center mb-3">
           <a href="#" class="forgot-link" onclick="showPanel('forgot'); return false;">Forgot password?</a>
+          <div class="form-check mb-3">
+
+<input
+
+type="checkbox"
+
+name="remember"
+
+class="form-check-input"
+
+id="remember">
+
+<label
+
+for="remember"
+
+class="form-check-label">
+
+Remember Me
+
+</label>
+
+</div>
         </div>
 
         <input
@@ -758,7 +880,13 @@ href="assets/css/style.css">
 
       <p class="section-label">Register</p>
 
-      <form method="POST">
+      <form
+
+method="POST"
+
+enctype="multipart/form-data"
+
+>
         <div class="mb-3">
           <input
             type="text"
@@ -790,6 +918,20 @@ href="assets/css/style.css">
             placeholder="Password"
             class="form-control"
             required>
+
+            <div class="mb-3">
+
+<input
+
+type="file"
+
+name="studentid"
+
+class="form-control"
+
+required>
+
+</div>
         </div>
         <input
           type="submit"
