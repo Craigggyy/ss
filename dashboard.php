@@ -83,33 +83,23 @@ if ($_SESSION['role'] == "user")
 
   body {
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-    background: var(--bg);
+
+    background:
+        url('image/bg.png') no-repeat center center fixed;
+
+    background-size: cover;
+
     min-height: 100vh;
+
     color: var(--text-1);
+
     -webkit-font-smoothing: antialiased;
+
     overflow-x: hidden;
-  }
+}
 
   /* ── Ambient background orbs ── */
-  body::before {
-    content: '';
-    position: fixed;
-    top: -20vh; left: -10vw;
-    width: 60vw; height: 60vh;
-    background: radial-gradient(ellipse, rgba(255,55,95,0.18) 0%, transparent 70%);
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  body::after {
-    content: '';
-    position: fixed;
-    bottom: -20vh; right: -10vw;
-    width: 55vw; height: 55vh;
-    background: radial-gradient(ellipse, rgba(10,132,255,0.10) 0%, transparent 70%);
-    pointer-events: none;
-    z-index: 0;
-  }
+  
 
   /* ── Navbar ── */
   .navbar {
@@ -698,6 +688,7 @@ if ($_SESSION['role'] == "user")
 
 </head>
 <body>
+  
 
 <!-- ── Navbar ── -->
 <nav class="navbar navbar-dark">
