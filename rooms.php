@@ -25,28 +25,18 @@ if ($_SESSION['role'] == "user")
 
 SELECT *
 
-FROM room_requests
+FROM users
 
-WHERE user_id='$userID'
+WHERE id='$userID'
 
-AND
-
-(
-
-status='Pending'
-
-OR
-
-status='Accepted'
-
-)
+AND assigned_room IS NOT NULL
 
 ");
 
-        if ($check->num_rows > 0)
-        {
-            $message = "You already have a pending request.";
-        }
+        if($check->num_rows > 0)
+{
+    $message = "Go to My Requests to transfer rooms.";
+}
         else
         {
             $room = $conn->query("
@@ -65,35 +55,39 @@ status='Accepted'
 
             $conn->query("
 
-                INSERT INTO room_requests
+INSERT INTO room_requests
 
-                (
+(
 
-                user_id,
+user_id,
 
-                room_id,
+room_id,
 
-                monthly_bill,
+monthly_bill,
 
-                status
+status,
 
-                )
+request_type
 
-                VALUES
+)
 
-                (
+VALUES
 
-                '$userID',
+(
 
-                '$roomID',
+'$userID',
 
-                '$bill',
+'$roomID',
 
-                'Pending'
+'$bill',
 
-                )
+'Pending',
 
-            ");
+'New'
+
+)
+
+");
 
             $message = "Room request submitted.";
         }
@@ -147,6 +141,22 @@ if ($_SESSION['role'] == "admin")
             WHERE id='$userID'
 
             ");
+
+            $newBill = $room['monthly_bill'];
+
+$conn->query("
+
+UPDATE billing
+
+SET
+
+room_id='$newRoom',
+
+amount='$newBill'
+
+WHERE user_id='$userID'
+
+");
 
             $conn->query("
 
@@ -250,6 +260,36 @@ if (isset($_POST['remove']))
 
         ");
 
+       $newBill = $room['monthly_bill'];
+
+$month = date("F Y");
+
+$checkBill = $conn->query("
+
+SELECT *
+
+FROM billing
+
+WHERE user_id='$userID'
+
+AND month='$month'
+
+");
+
+if($checkBill->num_rows > 0)
+{
+    $conn->query("
+
+    UPDATE billing
+
+    SET amount='$newBill'
+
+    WHERE user_id='$userID'
+
+    AND month='$month'
+
+    ");
+}
         $conn->query("
 
         UPDATE rooms

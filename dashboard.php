@@ -1095,7 +1095,7 @@ My Account
       </div>
 
       <div class="col-12">
-        <a href="rooms.php" class="tile c-orange wide">
+        <a href="my_requests.php" class="tile c-orange wide">
           <div class="tile-icon-wrap">📋</div>
           <div class="tile-text">
             <div class="tile-title">My Request Status</div>
