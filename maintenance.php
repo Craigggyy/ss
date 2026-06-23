@@ -21,22 +21,35 @@ if (isset($_POST['submit_request']))
 
     $description = $_POST['description'];
 
-    $filename = "";
+   $filename = "";
 
-    if (!empty($_FILES['image']['name']))
+if(!empty($_FILES['image']['name']))
+{
+    if(!is_dir("uploads/maintenance"))
     {
-        $filename = $_FILES['image']['name'];
+        mkdir(
 
-        $tmp = $_FILES['image']['tmp_name'];
+        "uploads/maintenance",
 
-        move_uploaded_file(
+        0777,
 
-            $tmp,
-
-            "uploads/maintenance/" . $filename
+        true
 
         );
     }
+
+    $filename = time()."_".$_FILES['image']['name'];
+
+    $tmp = $_FILES['image']['tmp_name'];
+
+    move_uploaded_file(
+
+    $tmp,
+
+    "uploads/maintenance/".$filename
+
+    );
+}
 
     $conn->query("
 
