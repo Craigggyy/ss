@@ -713,8 +713,29 @@ if ($_SESSION['role'] == "user")
         </div>
         <span class="user-pill-name"><?php echo $_SESSION['fullname']; ?></span>
       </div>
-      <a href="account.php" class="btn-glass btn-glass-outline">My Account</a>
-      <a href="logout.php" class="btn-glass btn-glass-red">Logout</a>
+<?php
+
+if($_SESSION['role'] == "user")
+
+{
+
+?>
+
+<a
+
+href="account.php"
+
+class="btn-glass btn-glass-outline">
+
+My Account
+
+</a>
+
+<?php
+
+}
+
+?>      <a href="logout.php" class="btn-glass btn-glass-red">Logout</a>
     </div>
   </div>
 </nav>

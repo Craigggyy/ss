@@ -216,6 +216,14 @@ if ($message != "")
 
 ?>
 
+<?php
+
+if($_SESSION['role']=="user")
+
+{
+
+?>
+
 <div class="card shadow mb-4">
 
 <div class="card-header bg-danger text-white">
@@ -353,6 +361,12 @@ class="btn btn-danger">
 </div>
 
 </div>
+
+<?php
+
+}
+
+?>
 
 <?php
 
