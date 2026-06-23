@@ -959,169 +959,311 @@ if ($_SESSION['role'] == "user")
 </style>
 
 </head>
+
 <body>
-  
 
-<!-- ── Navbar ── -->
-<nav class="navbar navbar-dark">
-  <div class="container">
-    <a class="navbar-brand">
-      <img src="image/2.png" class="navbar-logo" alt="DormEase Logo">
-      DormEase
-    </a>
-    <div class="nav-right">
-      <div class="user-pill d-none d-sm-flex">
-        <div class="user-avatar">
-          <?php echo strtoupper(substr($_SESSION['fullname'], 0, 1)); ?>
-        </div>
-        <span class="user-pill-name"><?php echo $_SESSION['fullname']; ?></span>
-      </div>
-<?php
+  <!-- ── Navbar ── -->
+  <nav class="navbar navbar-dark">
 
-if($_SESSION['role'] == "user")
+    <div class="container">
 
-{
+      <a class="navbar-brand">
+        <img src="image/2.png" class="navbar-logo" alt="DormEase Logo">
+        DormEase
+      </a>
 
-?>
+      <div class="nav-right">
 
-<a
+        <div class="user-pill d-none d-sm-flex">
 
-href="account.php"
-
-class="btn-glass btn-glass-outline">
-
-My Account
-
-</a>
-
-<?php
-
-}
-
-?>      <a href="logout.php" class="btn-glass btn-glass-red">Logout</a>
-    </div>
-  </div>
-</nav>
-
-<!-- ── Page ── -->
-<div class="page-wrap">
-
-  <!-- Welcome Hero -->
-  <div class="welcome-hero">
-    <div>
-      <div class="welcome-eyebrow">Front Desk — Dashboard</div>
-      <div class="welcome-name">Welcome back,<br><span><?php echo $_SESSION['fullname']; ?></span></div>
-      <div class="welcome-time" id="live-time"></div>
-    </div>
-  </div>
-
-  <?php if ($_SESSION['role'] == "admin"): ?>
-
-    <p class="section-label">Admin Controls</p>
-
-    <div class="row g-3">
-
-      <div class="col-md-4 col-6 top-card">
-        <a href="account.php" class="tile c-blue manage-accounts-card">
-          <div class="tile-title">Manage Accounts</div>
-          <span class="tile-tag">Residents on file</span>
-        </a>
-      </div>
-
-      <div class="col-md-4 col-6 top-card">
-        <a href="manageroom.php" class="tile c-green manage-rooms-card">
-          <div class="tile-title">Manage Rooms</div>
-          <span class="tile-tag">Add, edit, retire rooms</span>
-        </a>
-      </div>
-
-      <div class="col-md-4 col-6 top-card">
-        <a href="rooms.php" class="tile c-orange room-requests-card">
-          <div class="tile-title">Room Requests</div>
-          <span class="tile-tag">Approve or reject</span>
-        </a>
-      </div>
-
-      <div class="col-md-6 col-6">
-        <a href="billing.php" class="tile c-teal admin-billing-card">
-          <div class="tile-title">Billing</div>
-          <span class="tile-tag">Track monthly dues</span>
-        </a>
-      </div>
-
-      <div class="col-md-6 col-12">
-        <a href="maintenance.php" class="tile c-purple maintenance-card">
-          <div class="tile-title">Maintenance</div>
-          <span class="tile-tag">Open repair tickets</span>
-        </a>
-      </div>
-
-    </div>
-
-  <?php else: ?>
-
-    <!-- Room Banner -->
-    <div class="room-banner">
-      <div class="room-icon-wrap">🔑</div>
-      <div>
-        <div class="room-banner-label">Current Room</div>
-        <div class="room-banner-value"><?php echo $currentRoom; ?></div>
-      </div>
-    </div>
-
-    <p class="section-label">Resident Menu</p>
-
-    <div class="row g-3">
-
-      <div class="col-md-4 col-6 top-card">
-  <a href="rooms.php" class="tile c-green choose-room-card">
-          <div class="tile-title">Choose Room</div>
-          <span class="tile-tag">Browse vacancies</span>
-        </a>
-      </div>
-
-      <div class="col-md-4 col-6 top-card">
-  <a href="billing.php" class="tile c-teal billing-card">
-          <div class="tile-title">My Billing</div>
-          <span class="tile-tag">Dues and receipts</span>
-        </a>
-      </div>
-
-      <div class="col-md-4 col-6 top-card">
-  <a href="maintenance.php" class="tile c-purple maintenance-card">
-          <div class="tile-title">Maintenance</div>
-          <span class="tile-tag">Report an issue</span>
-        </a>
-      </div>
-
-      <div class="col-12">
-        <a href="my_requests.php" class="tile c-orange wide">
-          <div class="tile-icon-wrap">📋</div>
-          <div class="tile-text">
-            <div class="tile-title">My Request Status</div>
-            <span class="tile-tag">Track your application</span>
+          <div class="user-avatar">
+            <?php echo strtoupper(substr($_SESSION['fullname'], 0, 1)); ?>
           </div>
-          <span class="tile-cta">Track →</span>
+
+          <span class="user-pill-name">
+            <?php echo $_SESSION['fullname']; ?>
+          </span>
+
+        </div>
+
+        <?php
+
+        if ($_SESSION['role'] == "user")
+        {
+
+        ?>
+
+          <a href="account.php" class="btn-glass btn-glass-outline">
+            My Account
+          </a>
+
+        <?php
+
+        }
+
+        ?>
+
+        <a href="logout.php" class="btn-glass btn-glass-red">
+          Logout
         </a>
+
       </div>
 
     </div>
 
-  <?php endif; ?>
+  </nav>
 
-</div>
+  <!-- ── Page ── -->
+  <div class="page-wrap">
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Welcome Hero -->
+    <div class="welcome-hero">
 
-<script>
-  function updateTime() {
-    const now = new Date();
-    const opts = { weekday: 'long', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
-    document.getElementById('live-time').textContent = now.toLocaleDateString('en-US', opts);
-  }
-  updateTime();
-  setInterval(updateTime, 30000);
-</script>
+      <div>
 
-</body> 
+        <div class="welcome-eyebrow">
+          Front Desk — Dashboard
+        </div>
+
+        <div class="welcome-name">
+          Welcome back,<br>
+          <span><?php echo $_SESSION['fullname']; ?></span>
+        </div>
+
+        <div class="welcome-time" id="live-time"></div>
+
+      </div>
+
+    </div>
+
+    <?php if ($_SESSION['role'] == "admin"): ?>
+
+      <p class="section-label">
+        Admin Controls
+      </p>
+
+      <div class="row g-3">
+
+        <div class="col-md-4 col-6 top-card">
+
+          <a href="account.php" class="tile c-blue manage-accounts-card">
+
+            <div class="tile-title">
+              Manage Accounts
+            </div>
+
+            <span class="tile-tag">
+              Residents on file
+            </span>
+
+          </a>
+
+        </div>
+
+        <div class="col-md-4 col-6 top-card">
+
+          <a href="manageroom.php" class="tile c-green manage-rooms-card">
+
+            <div class="tile-title">
+              Manage Rooms
+            </div>
+
+            <span class="tile-tag">
+              Add, edit, retire rooms
+            </span>
+
+          </a>
+
+        </div>
+
+        <div class="col-md-4 col-6 top-card">
+
+          <a href="rooms.php" class="tile c-orange room-requests-card">
+
+            <div class="tile-title">
+              Room Requests
+            </div>
+
+            <span class="tile-tag">
+              Approve or reject
+            </span>
+
+          </a>
+
+        </div>
+
+        <div class="col-md-6 col-6">
+
+          <a href="billing.php" class="tile c-teal admin-billing-card">
+
+            <div class="tile-title">
+              Billing
+            </div>
+
+            <span class="tile-tag">
+              Track monthly dues
+            </span>
+
+          </a>
+
+        </div>
+
+        <div class="col-md-6 col-12">
+
+          <a href="maintenance.php" class="tile c-purple maintenance-card">
+
+            <div class="tile-title">
+              Maintenance
+            </div>
+
+            <span class="tile-tag">
+              Open repair tickets
+            </span>
+
+          </a>
+
+        </div>
+
+      </div>
+
+    <?php else: ?>
+
+      <!-- Room Banner -->
+      <div class="room-banner">
+
+        <div class="room-icon-wrap">
+          🔑
+        </div>
+
+        <div>
+
+          <div class="room-banner-label">
+            Current Room
+          </div>
+
+          <div class="room-banner-value">
+            <?php echo $currentRoom; ?>
+          </div>
+
+        </div>
+
+      </div>
+
+      <p class="section-label">
+        Resident Menu
+      </p>
+
+      <div class="row g-3">
+
+        <div class="col-md-4 col-6 top-card">
+
+          <a href="rooms.php" class="tile c-green choose-room-card">
+
+            <div class="tile-title">
+              Choose Room
+            </div>
+
+            <span class="tile-tag">
+              Browse vacancies
+            </span>
+
+          </a>
+
+        </div>
+
+        <div class="col-md-4 col-6 top-card">
+
+          <a href="billing.php" class="tile c-teal billing-card">
+
+            <div class="tile-title">
+              My Billing
+            </div>
+
+            <span class="tile-tag">
+              Dues and receipts
+            </span>
+
+          </a>
+
+        </div>
+
+        <div class="col-md-4 col-6 top-card">
+
+          <a href="maintenance.php" class="tile c-purple maintenance-card">
+
+            <div class="tile-title">
+              Maintenance
+            </div>
+
+            <span class="tile-tag">
+              Report an issue
+            </span>
+
+          </a>
+
+        </div>
+
+        <div class="col-12">
+
+          <a href="my_requests.php" class="tile c-orange wide">
+
+            <div class="tile-icon-wrap">
+              📋
+            </div>
+
+            <div class="tile-text">
+
+              <div class="tile-title">
+                My Request Status
+              </div>
+
+              <span class="tile-tag">
+                Track your application
+              </span>
+
+            </div>
+
+            <span class="tile-cta">
+              Track →
+            </span>
+
+          </a>
+
+        </div>
+
+      </div>
+
+    <?php endif; ?>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+
+    function updateTime()
+    {
+      const now = new Date();
+
+      const opts =
+      {
+        weekday: 'long',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      };
+
+      document.getElementById('live-time').textContent =
+        now.toLocaleDateString('en-US', opts);
+    }
+
+    updateTime();
+
+    setInterval(updateTime, 30000);
+
+  </script>
+
+</body>
+
 </html>

@@ -783,343 +783,411 @@ href="assets/css/style.css">
 
 <body>
 
-<div class="auth-wrapper">
+  <div class="auth-wrapper">
 
-  <?php if ($message != ""): ?>
-  <div class="alert alert-info mb-3">
-    <?php echo $message; ?>
-  </div>
-  <?php endif; ?>
+    <?php if ($message != ""): ?>
 
-  <div class="auth-card">
+      <div class="alert alert-info mb-3">
+        <?php echo $message; ?>
+      </div>
 
-    <div class="text-center mb-4">
-      <div class="logo-mark">
-    <img src="image/2.png" alt="DormEase Logo">
-</div>
-      
-    </div>
+    <?php endif; ?>
 
-    <?php
+    <div class="auth-card">
+
+      <div class="text-center mb-4">
+
+        <div class="logo-mark">
+          <img src="image/2.png" alt="DormEase Logo">
+        </div>
+
+      </div>
+
+      <?php
+
       $showForgot = false;
-      $showRegister = ($message == "Registration Successful." || (isset($_POST['register']) && $message != ""));
-    ?>
 
-    <!-- LOGIN PANEL -->
-    <div class="login-panel" id="loginPanel">
+      $showRegister = (
+        $message == "Registration Successful."
+        || (isset($_POST['register']) && $message != "")
+      );
 
-      <p class="section-label">Login</p>
+      ?>
 
-      <form method="POST">
-        <div class="mb-3">
-          <input
-            type="text"
-            name="username"
-            placeholder="Username"
-            class="form-control"
-            required>
-        </div>
-        <div class="mb-3">
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            class="form-control"
-            required>
-        </div>
+      <!-- LOGIN PANEL -->
+      <div class="login-panel" id="loginPanel">
 
-        <div class="d-flex justify-content-between align-items-center mb-3">
-          <a href="#" class="forgot-link" onclick="showPanel('forgot'); return false;">Forgot password?</a>
-          <div class="form-check mb-3">
-
-<input
-
-type="checkbox"
-
-name="remember"
-
-class="form-check-input"
-
-id="remember">
-
-<label
-
-for="remember"
-
-class="form-check-label">
-
-Remember Me
-
-</label>
-
-</div>
-        </div>
-
-        <input
-          type="submit"
-          name="login"
-          value="Continue"
-          class="btn-login mb-3">
-
-        <div class="airbnb-divider">or</div>
-
-        <input
-          type="button"
-          value="Create an account"
-          class="btn-register"
-          onclick="showPanel('register')">
-      </form>
-
-    </div>
-
-    <!-- REGISTER PANEL -->
-    <div class="register-panel <?php echo ($showRegister ? 'active' : ''); ?>" id="registerPanel">
-
-      <button type="button" class="back-link" onclick="showPanel('login')">&#8592; Back to login</button>
-
-      <p class="section-label">Register</p>
-
-      <form
-
-method="POST"
-
-enctype="multipart/form-data"
-
->
-        <div class="mb-3">
-          <input
-            type="text"
-            name="fullname"
-            placeholder="Full Name"
-            class="form-control"
-            required>
-        </div>
-        <div class="mb-3">
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            class="form-control"
-            required>
-        </div>
-        <div class="mb-3">
-          <input
-            type="text"
-            name="username"
-            placeholder="Username"
-            class="form-control"
-            required>
-        </div>
-        <div class="mb-3">
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            class="form-control"
-            required>
-
-            <div class="mb-3">
-<br>
-<label class="upload-note">
-   Upload Student ID*
-
-</label>
-
-
-
-
-
-<input
-
-type="file"
-
-name="studentid"
-
-class="form-control"
-
-required>
-
-</div>
-        </div>
-        <input
-          type="submit"
-          name="register"
-          value="Register"
-          class="btn-login">
-      </form>
-
-    </div>
-
-    <!-- FORGOT PASSWORD PANEL -->
-    <div class="forgot-panel <?php echo ($showForgot ? 'active' : ''); ?>" id="forgotPanel">
-
-      <button type="button" class="back-link" onclick="showPanel('login')">&#8592; Back to login</button>
-
-      <p class="section-label">Forgot Password</p>
-
-<?php if($_SESSION['otp_sent'] == false): ?>
-          <span class="step-badge">Step 1 of 3 &mdash; Enter Email</span>
+        <p class="section-label">
+          Login
+        </p>
 
         <form method="POST">
+
           <div class="mb-3">
+
+            <input
+              type="text"
+              name="username"
+              placeholder="Username"
+              class="form-control"
+              required>
+
+          </div>
+
+          <div class="mb-3">
+
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              class="form-control"
+              required>
+
+          </div>
+
+          <div class="d-flex justify-content-between align-items-center mb-3">
+
+            <a
+              href="#"
+              class="forgot-link"
+              onclick="showPanel('forgot'); return false;">
+
+              Forgot password?
+
+            </a>
+
+            <div class="form-check mb-3">
+
+              <input
+                type="checkbox"
+                name="remember"
+                class="form-check-input"
+                id="remember">
+
+              <label
+                for="remember"
+                class="form-check-label">
+
+                Remember Me
+
+              </label>
+
+            </div>
+
+          </div>
+
+          <input
+            type="submit"
+            name="login"
+            value="Continue"
+            class="btn-login mb-3">
+
+          <div class="airbnb-divider">
+            or
+          </div>
+
+          <input
+            type="button"
+            value="Create an account"
+            class="btn-register"
+            onclick="showPanel('register')">
+
+        </form>
+
+      </div>
+
+      <!-- REGISTER PANEL -->
+      <div
+        class="register-panel <?php echo ($showRegister ? 'active' : ''); ?>"
+        id="registerPanel">
+
+        <button
+          type="button"
+          class="back-link"
+          onclick="showPanel('login')">
+
+          &#8592; Back to login
+
+        </button>
+
+        <p class="section-label">
+          Register
+        </p>
+
+        <form
+          method="POST"
+          enctype="multipart/form-data">
+
+          <div class="mb-3">
+
+            <input
+              type="text"
+              name="fullname"
+              placeholder="Full Name"
+              class="form-control"
+              required>
+
+          </div>
+
+          <div class="mb-3">
+
             <input
               type="email"
               name="email"
-              placeholder="Enter your registered email"
+              placeholder="Email"
               class="form-control"
               required>
+
           </div>
-          <input
-            type="submit"
-            name="sendotp"
-            value="Send OTP"
-            class="btn-otp">
-        </form>
 
-<?php elseif($_SESSION['otp_sent']==true && $_SESSION['otp_verified']==false): ?>
-        <span class="step-badge">Step 2 of 3 &mdash; Verify OTP</span>
-
-        <form method="POST">
           <div class="mb-3">
+
             <input
-              type="number"
-              name="otp"
-              placeholder="Enter OTP"
+              type="text"
+              name="username"
+              placeholder="Username"
               class="form-control"
               required>
+
           </div>
-          <input
-            type="submit"
-            name="verifyotp"
-            value="Verify OTP"
-            class="btn-verify">
-        </form>
 
-      <?php else: ?>
-
-        <span class="step-badge">Step 3 of 3 &mdash; Change Password</span>
-
-        <form method="POST">
           <div class="mb-3">
+
             <input
               type="password"
-              name="newpassword"
-              placeholder="Enter New Password"
+              name="password"
+              placeholder="Password"
               class="form-control"
               required>
+
           </div>
+
+          <div class="mb-3">
+
+            <label class="upload-note">
+
+              Upload Student ID*
+
+            </label>
+
+            <input
+              type="file"
+              name="studentid"
+              class="form-control"
+              required>
+
+          </div>
+
           <input
             type="submit"
-            name="changepassword"
-            value="Change Password"
-            class="btn-change">
+            name="register"
+            value="Register"
+            class="btn-login">
+
         </form>
 
-      <?php endif; ?>
+      </div>
+
+      <!-- FORGOT PASSWORD PANEL -->
+      <div
+        class="forgot-panel <?php echo ($showForgot ? 'active' : ''); ?>"
+        id="forgotPanel">
+
+        <button
+          type="button"
+          class="back-link"
+          onclick="showPanel('login')">
+
+          &#8592; Back to login
+
+        </button>
+
+        <p class="section-label">
+          Forgot Password
+        </p>
+
+        <?php if ($_SESSION['otp_sent'] == false): ?>
+
+          <span class="step-badge">
+            Step 1 of 3 &mdash; Enter Email
+          </span>
+
+          <form method="POST">
+
+            <div class="mb-3">
+
+              <input
+                type="email"
+                name="email"
+                placeholder="Enter your registered email"
+                class="form-control"
+                required>
+
+            </div>
+
+            <input
+              type="submit"
+              name="sendotp"
+              value="Send OTP"
+              class="btn-otp">
+
+          </form>
+
+        <?php elseif ($_SESSION['otp_sent'] == true && $_SESSION['otp_verified'] == false): ?>
+
+          <span class="step-badge">
+            Step 2 of 3 &mdash; Verify OTP
+          </span>
+
+          <form method="POST">
+
+            <div class="mb-3">
+
+              <input
+                type="number"
+                name="otp"
+                placeholder="Enter OTP"
+                class="form-control"
+                required>
+
+            </div>
+
+            <input
+              type="submit"
+              name="verifyotp"
+              value="Verify OTP"
+              class="btn-verify">
+
+          </form>
+
+        <?php else: ?>
+
+          <span class="step-badge">
+            Step 3 of 3 &mdash; Change Password
+          </span>
+
+          <form method="POST">
+
+            <div class="mb-3">
+
+              <input
+                type="password"
+                name="newpassword"
+                placeholder="Enter New Password"
+                class="form-control"
+                required>
+
+            </div>
+
+            <input
+              type="submit"
+              name="changepassword"
+              value="Change Password"
+              class="btn-change">
+
+          </form>
+
+        <?php endif; ?>
+
+      </div>
 
     </div>
 
   </div>
 
-</div>
+  <script>
 
-<script>
-function showPanel(panel)
-{
-  document.getElementById('loginPanel').style.display='none';
+    function showPanel(panel)
+    {
+      document.getElementById('loginPanel').style.display = 'none';
 
-  document.getElementById('registerPanel').style.display='none';
+      document.getElementById('registerPanel').style.display = 'none';
 
-  document.getElementById('forgotPanel').style.display='none';
+      document.getElementById('forgotPanel').style.display = 'none';
 
-  if(panel=='login')
-  {
-    document.getElementById('loginPanel').style.display='block';
-  }
+      if (panel == 'login')
+      {
+        document.getElementById('loginPanel').style.display = 'block';
+      }
 
-  if(panel=='register')
-  {
-    document.getElementById('registerPanel').style.display='block';
-  }
+      if (panel == 'register')
+      {
+        document.getElementById('registerPanel').style.display = 'block';
+      }
 
-  if(panel=='forgot')
-  {
-    document.getElementById('forgotPanel').style.display='block';
-  }
-}
+      if (panel == 'forgot')
+      {
+        document.getElementById('forgotPanel').style.display = 'block';
+      }
+    }
 
-(function() {
+    (function() {
 
-<?php
+      <?php
 
-if(isset($_POST['sendotp']))
+      if (isset($_POST['sendotp']))
+      {
 
-{
+      ?>
 
-?>
+        showPanel('forgot');
 
-showPanel('forgot');
+      <?php
 
-<?php
+      }
 
-}
+      elseif (isset($_POST['verifyotp']))
+      {
 
-elseif(isset($_POST['verifyotp']))
+      ?>
 
-{
+        showPanel('forgot');
 
-?>
+      <?php
 
-showPanel('forgot');
+      }
 
-<?php
+      elseif (isset($_POST['changepassword']))
+      {
 
-}
+      ?>
 
-elseif(isset($_POST['changepassword']))
+        showPanel('login');
 
-{
+      <?php
 
-?>
+      }
 
-showPanel('login');
+      elseif ($showRegister)
+      {
 
-<?php
+      ?>
 
-}
+        showPanel('register');
 
-elseif($showRegister)
+      <?php
 
-{
+      }
 
-?>
+      else
 
-showPanel('register');
+      {
 
-<?php
+      ?>
 
-}
+        showPanel('login');
 
-else
+      <?php
 
-{
+      }
 
-?>
+      ?>
 
-showPanel('login');
+    })();
 
-<?php
+  </script>
 
-}
-
-?>
-
-})();
-</script>
-
-<script
-src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
-</script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 

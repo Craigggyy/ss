@@ -33,10 +33,11 @@ AND assigned_room IS NOT NULL
 
 ");
 
-        if($check->num_rows > 0)
-{
-    $message = "Go to My Requests to transfer rooms.";
-}
+        if ($check->num_rows > 0)
+        {
+            $message = "Go to My Requests to transfer rooms.";
+        }
+
         else
         {
             $room = $conn->query("
@@ -96,45 +97,43 @@ VALUES
 
 if ($_SESSION['role'] == "admin")
 {
-    if(isset($_POST['transfer']))
-{
-    $userID = $_POST['user_id'];
-
-    $oldRoom = $_POST['old_room'];
-
-    $newRoom = $_POST['new_room'];
-
-    if($oldRoom == $newRoom)
+    if (isset($_POST['transfer']))
     {
-        $message = "Resident is already in that room.";
-    }
+        $userID = $_POST['user_id'];
 
-    else
+        $oldRoom = $_POST['old_room'];
 
-    {
-        $check = $conn->query("
+        $newRoom = $_POST['new_room'];
 
-        SELECT *
-
-        FROM rooms
-
-        WHERE room_id='$newRoom'
-
-        ");
-
-        $room = $check->fetch_assoc();
-
-        if($room['occupied'] >= $room['capacity'])
+        if ($oldRoom == $newRoom)
         {
-            $message = "Room is already full.";
+            $message = "Resident is already in that room.";
         }
 
         else
-
         {
-            $newBill = $room['monthly_bill'];
+            $check = $conn->query("
 
-$conn->query("
+            SELECT *
+
+            FROM rooms
+
+            WHERE room_id='$newRoom'
+
+            ");
+
+            $room = $check->fetch_assoc();
+
+            if ($room['occupied'] >= $room['capacity'])
+            {
+                $message = "Room is already full.";
+            }
+
+            else
+            {
+                $newBill = $room['monthly_bill'];
+
+                $conn->query("
 
 UPDATE users
 
@@ -144,7 +143,7 @@ WHERE id='$userID'
 
 ");
 
-$conn->query("
+                $conn->query("
 
 UPDATE room_requests
 
@@ -158,9 +157,9 @@ AND status='Accepted'
 
 ");
 
-$month = date("F Y");
+                $month = date("F Y");
 
-$conn->query("
+                $conn->query("
 
 UPDATE billing
 
@@ -172,38 +171,38 @@ AND month='$month'
 
 ");
 
-            $conn->query("
+                $conn->query("
 
-            UPDATE rooms
+                UPDATE rooms
 
-            SET occupied=occupied-1
+                SET occupied=occupied-1
 
-            WHERE room_id='$oldRoom'
+                WHERE room_id='$oldRoom'
 
-            ");
+                ");
 
-            $conn->query("
+                $conn->query("
 
-            UPDATE rooms
+                UPDATE rooms
 
-            SET occupied=occupied+1
+                SET occupied=occupied+1
 
-            WHERE room_id='$newRoom'
+                WHERE room_id='$newRoom'
 
-            ");
+                ");
 
-            $message = "Resident transferred.";
+                $message = "Resident transferred.";
+            }
         }
     }
-}
 
-if (isset($_POST['remove']))
-{
-    $userID = $_POST['user_id'];
+    if (isset($_POST['remove']))
+    {
+        $userID = $_POST['user_id'];
 
-    $roomID = $_POST['room_id'];
+        $roomID = $_POST['room_id'];
 
-    $conn->query("
+        $conn->query("
 
         UPDATE users
 
@@ -211,9 +210,9 @@ if (isset($_POST['remove']))
 
         WHERE id='$userID'
 
-    ");
+        ");
 
-    $conn->query("
+        $conn->query("
 
         UPDATE rooms
 
@@ -221,167 +220,168 @@ if (isset($_POST['remove']))
 
         WHERE room_id='$roomID'
 
-    ");
+        ");
 
-    $message = "Resident removed.";
-}
-
-   if(isset($_POST['approve']))
-{
-    $requestID = $_POST['request_id'];
-
-    $userID = $_POST['user_id'];
-
-    $roomID = $_POST['room_id'];
-
-    $check = $conn->query("
-
-    SELECT *
-
-    FROM rooms
-
-    WHERE room_id='$roomID'
-
-    ");
-
-    $room = $check->fetch_assoc();
-
-    if($room['occupied'] >= $room['capacity'])
-    {
-        $message = "Room is already full.";
+        $message = "Resident removed.";
     }
 
-    else
-
+    if (isset($_POST['approve']))
     {
-        $conn->query("
+        $requestID = $_POST['request_id'];
 
-        UPDATE room_requests
+        $userID = $_POST['user_id'];
 
-        SET status='Accepted'
+        $roomID = $_POST['room_id'];
 
-        WHERE request_id='$requestID'
+        $check = $conn->query("
 
-        ");
+        SELECT *
 
-        $conn->query("
-
-        UPDATE users
-
-        SET assigned_room='$roomID'
-
-        WHERE id='$userID'
-
-        ");
-
-        $newBill = $room['monthly_bill'];
-
-$month = date("F Y");
-
-$checkBill = $conn->query("
-
-SELECT *
-
-FROM billing
-
-WHERE user_id='$userID'
-
-AND month='$month'
-
-");
-
-if($checkBill->num_rows == 0)
-{
-    $conn->query("
-
-    INSERT INTO billing
-
-    (
-
-    user_id,
-
-    month,
-
-    amount,
-
-    status
-
-    )
-
-    VALUES
-
-    (
-
-    '$userID',
-
-    '$month',
-
-    '$newBill',
-
-    'Unpaid'
-
-    )
-
-    ");
-}
-else
-{
-    $conn->query("
-
-    UPDATE billing
-
-    SET amount='$newBill'
-
-    WHERE user_id='$userID'
-
-    AND month='$month'
-
-    ");
-}
-
-       $newBill = $room['monthly_bill'];
-
-$month = date("F Y");
-
-$checkBill = $conn->query("
-
-SELECT *
-
-FROM billing
-
-WHERE user_id='$userID'
-
-AND month='$month'
-
-");
-
-if($checkBill->num_rows > 0)
-{
-    $conn->query("
-
-    UPDATE billing
-
-    SET amount='$newBill'
-
-    WHERE user_id='$userID'
-
-    AND month='$month'
-
-    ");
-}
-        $conn->query("
-
-        UPDATE rooms
-
-        SET occupied=occupied+1
+        FROM rooms
 
         WHERE room_id='$roomID'
 
         ");
 
-        $message = "Request Approved.";
+        $room = $check->fetch_assoc();
+
+        if ($room['occupied'] >= $room['capacity'])
+        {
+            $message = "Room is already full.";
+        }
+
+        else
+        {
+            $conn->query("
+
+            UPDATE room_requests
+
+            SET status='Accepted'
+
+            WHERE request_id='$requestID'
+
+            ");
+
+            $conn->query("
+
+            UPDATE users
+
+            SET assigned_room='$roomID'
+
+            WHERE id='$userID'
+
+            ");
+
+            $newBill = $room['monthly_bill'];
+
+            $month = date("F Y");
+
+            $checkBill = $conn->query("
+
+SELECT *
+
+FROM billing
+
+WHERE user_id='$userID'
+
+AND month='$month'
+
+");
+
+            if ($checkBill->num_rows == 0)
+            {
+                $conn->query("
+
+                INSERT INTO billing
+
+                (
+
+                user_id,
+
+                month,
+
+                amount,
+
+                status
+
+                )
+
+                VALUES
+
+                (
+
+                '$userID',
+
+                '$month',
+
+                '$newBill',
+
+                'Unpaid'
+
+                )
+
+                ");
+            }
+
+            else
+            {
+                $conn->query("
+
+                UPDATE billing
+
+                SET amount='$newBill'
+
+                WHERE user_id='$userID'
+
+                AND month='$month'
+
+                ");
+            }
+
+            $newBill = $room['monthly_bill'];
+
+            $month = date("F Y");
+
+            $checkBill = $conn->query("
+
+SELECT *
+
+FROM billing
+
+WHERE user_id='$userID'
+
+AND month='$month'
+
+");
+
+            if ($checkBill->num_rows > 0)
+            {
+                $conn->query("
+
+                UPDATE billing
+
+                SET amount='$newBill'
+
+                WHERE user_id='$userID'
+
+                AND month='$month'
+
+                ");
+            }
+
+            $conn->query("
+
+            UPDATE rooms
+
+            SET occupied=occupied+1
+
+            WHERE room_id='$roomID'
+
+            ");
+
+            $message = "Request Approved.";
+        }
     }
-}
 
     if (isset($_POST['reject']))
     {
@@ -389,11 +389,11 @@ if($checkBill->num_rows > 0)
 
         $conn->query("
 
-            UPDATE room_requests
+        UPDATE room_requests
 
-            SET status='Rejected'
+        SET status='Rejected'
 
-            WHERE request_id='$requestID'
+        WHERE request_id='$requestID'
 
         ");
 
@@ -409,673 +409,672 @@ if($checkBill->num_rows > 0)
 
 <head>
 
-<title>
+    <title>
+        Rooms
+    </title>
 
-Rooms
+    <meta charset="UTF-8">
 
-</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1">
 
-<meta charset="UTF-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
 
-<meta
-name="viewport"
-content="width=device-width, initial-scale=1">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
 
-<link
-href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap"
-rel="stylesheet">
-
-<link
-href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-rel="stylesheet">
-
-<link
-rel="stylesheet"
-href="assets/css/style.css">
+    <link
+        rel="stylesheet"
+        href="assets/css/style.css">
 
 </head>
 
 <body>
 
-<nav class="navbar navbar-dark">
+    <nav class="navbar navbar-dark">
 
-<div class="container">
+        <div class="container">
 
-<a class="navbar-brand">
+            <a class="navbar-brand">
+                DormEase
+            </a>
 
-DormEase
+            <div>
 
-</a>
+                <?php
 
-<div>
+                if ($_SESSION['role'] == "admin")
+                {
 
-<?php
+                ?>
 
-if ($_SESSION['role'] == "admin")
+                    <a
+                        href="manageroom.php"
+                        class="btn btn-light me-2">
 
-{
+                        Manage Rooms
 
-?>
+                    </a>
 
-<a
-href="manageroom.php"
-class="btn btn-light me-2">
+                <?php
 
-Manage Rooms
+                }
 
-</a>
+                ?>
 
-<?php
+                <a
+                    href="dashboard.php"
+                    class="btn btn-light">
 
-}
+                    Dashboard
 
-?>
+                </a>
 
-<a
-href="dashboard.php"
-class="btn btn-light">
+            </div>
 
-Dashboard
+        </div>
 
-</a>
+    </nav>
 
-</div>
+    <div class="container mt-5">
 
-</div>
+        <span class="page-eyebrow">Room Ledger</span>
 
-</nav>
+        <?php
 
-<div class="container mt-5">
+        if ($message != "")
+        {
 
-<span class="page-eyebrow">Room Ledger</span>
+        ?>
 
-<?php
+            <div class="alert alert-success">
 
-if ($message != "")
-{
+                <?php echo $message; ?>
 
-?>
+            </div>
 
-<div class="alert alert-success">
+        <?php
 
-<?php echo $message; ?>
+        }
 
-</div>
+        ?>
 
-<?php
+        <?php
 
-}
+        if ($_SESSION['role'] == "user")
+        {
 
-?>
+        ?>
 
-<?php
+            <div class="card shadow">
 
-if ($_SESSION['role'] == "user")
+                <div class="card-header bg-success text-white">
 
-{
+                    Available Rooms
 
-?>
+                </div>
 
-<div class="card shadow">
+                <div class="card-body">
 
-<div class="card-header bg-success text-white">
+                    <table class="table table-bordered">
 
-Available Rooms
+                        <tr>
 
-</div>
+                            <th>Room</th>
 
-<div class="card-body">
+                            <th>Capacity</th>
 
-<table class="table table-bordered">
+                            <th>Occupied</th>
 
-<tr>
+                            <th>Available</th>
 
-<th>Room</th>
+                            <th>Monthly Bill</th>
 
-<th>Capacity</th>
+                            <th>Action</th>
 
-<th>Occupied</th>
+                        </tr>
 
-<th>Available</th>
+                        <?php
 
-<th>Monthly Bill</th>
+                        $rooms = $conn->query("
 
-<th>Action</th>
+                            SELECT *
 
-</tr>
+                            FROM rooms
 
-<?php
+                        ");
 
-$rooms = $conn->query("
+                        while ($row = $rooms->fetch_assoc())
+                        {
 
-    SELECT *
+                            $available = $row['capacity'] - $row['occupied'];
 
-    FROM rooms
+                        ?>
 
-");
+                            <tr>
 
-while ($row = $rooms->fetch_assoc())
+                                <td>
 
-{
+                                    <span class="room-tag"><?php echo $row['room_number']; ?></span>
 
-$available = $row['capacity'] - $row['occupied'];
+                                </td>
 
-?>
+                                <td>
 
-<tr>
+                                    <?php echo $row['capacity']; ?>
 
-<td>
+                                </td>
 
-<span class="room-tag"><?php echo $row['room_number']; ?></span>
+                                <td>
 
-</td>
+                                    <?php echo $row['occupied']; ?>
 
-<td>
+                                </td>
 
-<?php echo $row['capacity']; ?>
+                                <td>
 
-</td>
+                                    <?php echo $available; ?>
 
-<td>
+                                </td>
 
-<?php echo $row['occupied']; ?>
+                                <td>
 
-</td>
+                                    <span class="ledger-amount">₱<?php echo $row['monthly_bill']; ?></span>
 
-<td>
+                                </td>
 
-<?php echo $available; ?>
+                                <td>
 
-</td>
+                                    <?php
 
-<td>
+                                    if ($available > 0)
+                                    {
 
-<span class="ledger-amount">₱<?php echo $row['monthly_bill']; ?></span>
+                                    ?>
 
-</td>
+                                        <form method="POST">
 
-<td>
+                                            <input
+                                                type="hidden"
+                                                name="room_id"
+                                                value="<?php echo $row['room_id']; ?>">
 
-<?php
+                                            <input
+                                                type="submit"
+                                                name="reserve_room"
+                                                value="Confirm"
+                                                class="btn btn-success btn-sm">
 
-if ($available > 0)
+                                        </form>
 
-{
+                                    <?php
 
-?>
+                                    }
 
-<form method="POST">
+                                    else
+                                    {
 
-<input
-type="hidden"
-name="room_id"
-value="<?php echo $row['room_id']; ?>">
+                                        echo "<span class='badge-status badge-unpaid'>Full</span>";
 
-<input
-type="submit"
-name="reserve_room"
-value="Confirm"
-class="btn btn-success btn-sm">
+                                    }
 
-</form>
+                                    ?>
 
-<?php
+                                </td>
 
-}
+                            </tr>
 
-else
+                        <?php
 
-{
+                        }
 
-echo "<span class='badge-status badge-unpaid'>Full</span>";
+                        ?>
 
-}
+                    </table>
 
-?>
+                </div>
 
-</td>
+            </div>
 
-</tr>
+            <div class="card shadow mt-4">
 
-<?php
+                <div class="card-header bg-primary text-white">
 
-}
+                    My Request Status
 
-?>
+                </div>
 
-</table>
+                <div class="card-body">
 
-</div>
+                    <table class="table table-bordered">
 
-</div>
+                        <tr>
 
-<div class="card shadow mt-4">
+                            <th>Room</th>
 
-<div class="card-header bg-primary text-white">
+                            <th>Bill</th>
 
-My Request Status
+                            <th>Status</th>
 
-</div>
+                        </tr>
 
-<div class="card-body">
+                        <?php
 
-<table class="table table-bordered">
+                        $id = $_SESSION['user_id'];
 
-<tr>
+                        $status = $conn->query("
 
-<th>Room</th>
+                            SELECT
 
-<th>Bill</th>
+                            room_requests.*,
 
-<th>Status</th>
+                            rooms.room_number
 
-</tr>
+                            FROM room_requests
 
-<?php
+                            INNER JOIN rooms
 
-$id = $_SESSION['user_id'];
+                            ON room_requests.room_id=rooms.room_id
 
-$status = $conn->query("
+                            WHERE room_requests.user_id='$id'
 
-SELECT
+                        ");
 
-room_requests.*,
+                        while ($row = $status->fetch_assoc())
+                        {
 
-rooms.room_number
+                        ?>
 
-FROM room_requests
+                            <tr>
 
-INNER JOIN rooms
+                                <td>
 
-ON room_requests.room_id=rooms.room_id
+                                    <span class="room-tag"><?php echo $row['room_number']; ?></span>
 
-WHERE room_requests.user_id='$id'
+                                </td>
 
-");
+                                <td>
 
-while ($row = $status->fetch_assoc())
+                                    <span class="ledger-amount">₱<?php echo $row['monthly_bill']; ?></span>
 
-{
+                                </td>
 
-?>
+                                <td>
 
-<tr>
+                                    <?php
 
-<td>
+                                    if ($row['status'] == "Pending")
+                                    {
 
-<span class="room-tag"><?php echo $row['room_number']; ?></span>
+                                        echo "<span class='badge-status badge-pending'>Pending</span>";
 
-</td>
+                                    }
 
-<td>
+                                    elseif ($row['status'] == "Accepted")
+                                    {
 
-<span class="ledger-amount">₱<?php echo $row['monthly_bill']; ?></span>
+                                        echo "<span class='badge-status badge-accepted'>Accepted</span>";
 
-</td>
+                                    }
 
-<td>
+                                    else
+                                    {
 
-<?php
+                                        echo "<span class='badge-status badge-rejected'>" . $row['status'] . "</span>";
 
-if ($row['status'] == "Pending")
-{
-echo "<span class='badge-status badge-pending'>Pending</span>";
-}
-elseif ($row['status'] == "Accepted")
-{
-echo "<span class='badge-status badge-accepted'>Accepted</span>";
-}
-else
-{
-echo "<span class='badge-status badge-rejected'>".$row['status']."</span>";
-}
+                                    }
 
-?>
+                                    ?>
 
-</td>
+                                </td>
 
-</tr>
+                            </tr>
 
-<?php
+                        <?php
 
-}
+                        }
 
-?>
+                        ?>
 
-</table>
+                    </table>
 
-</div>
+                </div>
 
-</div>
+            </div>
 
-<?php
+        <?php
 
-}
+        }
 
-else
+        else
+        {
 
-{
+        ?>
 
-?>
+            <div class="card shadow">
 
-<div class="card shadow">
+                <div class="card-header bg-danger text-white">
 
-<div class="card-header bg-danger text-white">
+                    Room Requests
 
-Room Requests
+                </div>
 
-</div>
+                <div class="card-body">
 
-<div class="card-body">
+                    <table class="table table-bordered">
 
-<table class="table table-bordered">
+                        <tr>
 
-<tr>
+                            <th>Resident</th>
 
-<th>Resident</th>
+                            <th>Room</th>
 
-<th>Room</th>
+                            <th>Bill</th>
 
-<th>Bill</th>
+                            <th>Status</th>
 
-<th>Status</th>
+                            <th>Action</th>
 
-<th>Action</th>
+                        </tr>
 
-</tr>
+                        <?php
 
-<?php
+                        $requests = $conn->query("
 
-$requests = $conn->query("
+                            SELECT
 
-SELECT
+                            room_requests.*,
 
-room_requests.*,
+                            users.fullname,
 
-users.fullname,
+                            rooms.room_number
 
-rooms.room_number
+                            FROM room_requests
 
-FROM room_requests
+                            INNER JOIN users
 
-INNER JOIN users
+                            ON room_requests.user_id=users.id
 
-ON room_requests.user_id=users.id
+                            INNER JOIN rooms
 
-INNER JOIN rooms
+                            ON room_requests.room_id=rooms.room_id
 
-ON room_requests.room_id=rooms.room_id
+                        ");
 
-");
+                        while ($row = $requests->fetch_assoc())
+                        {
 
-while ($row = $requests->fetch_assoc())
+                        ?>
 
-{
+                            <tr>
 
-?>
+                                <td>
 
-<tr>
+                                    <?php echo $row['fullname']; ?>
 
-<td>
+                                </td>
 
-<?php echo $row['fullname']; ?>
+                                <td>
 
-</td>
+                                    <span class="room-tag"><?php echo $row['room_number']; ?></span>
 
-<td>
+                                </td>
 
-<span class="room-tag"><?php echo $row['room_number']; ?></span>
+                                <td>
 
-</td>
+                                    <span class="ledger-amount">₱<?php echo $row['monthly_bill']; ?></span>
 
-<td>
+                                </td>
 
-<span class="ledger-amount">₱<?php echo $row['monthly_bill']; ?></span>
+                                <td>
 
-</td>
+                                    <?php
 
-<td>
+                                    if ($row['status'] == "Pending")
+                                    {
 
-<?php
+                                        echo "<span class='badge-status badge-pending'>Pending</span>";
 
-if ($row['status'] == "Pending")
-{
-echo "<span class='badge-status badge-pending'>Pending</span>";
-}
-elseif ($row['status'] == "Accepted")
-{
-echo "<span class='badge-status badge-accepted'>Accepted</span>";
-}
-else
-{
-echo "<span class='badge-status badge-rejected'>".$row['status']."</span>";
-}
+                                    }
 
-?>
+                                    elseif ($row['status'] == "Accepted")
+                                    {
 
-</td>
+                                        echo "<span class='badge-status badge-accepted'>Accepted</span>";
 
-<td>
+                                    }
 
-<?php
+                                    else
+                                    {
 
-if ($row['status'] == "Pending")
+                                        echo "<span class='badge-status badge-rejected'>" . $row['status'] . "</span>";
 
-{
+                                    }
 
-?>
+                                    ?>
 
-<form method="POST">
+                                </td>
 
-<input
-type="hidden"
-name="request_id"
-value="<?php echo $row['request_id']; ?>">
+                                <td>
 
-<input
-type="hidden"
-name="user_id"
-value="<?php echo $row['user_id']; ?>">
+                                    <?php
 
-<input
-type="hidden"
-name="room_id"
-value="<?php echo $row['room_id']; ?>">
+                                    if ($row['status'] == "Pending")
+                                    {
 
-<input
-type="submit"
-name="approve"
-value="Approve"
-class="btn btn-success btn-sm">
+                                    ?>
 
-<input
-type="submit"
-name="reject"
-value="Reject"
-class="btn btn-danger btn-sm">
+                                        <form method="POST">
 
-</form>
+                                            <input
+                                                type="hidden"
+                                                name="request_id"
+                                                value="<?php echo $row['request_id']; ?>">
 
-<?php
+                                            <input
+                                                type="hidden"
+                                                name="user_id"
+                                                value="<?php echo $row['user_id']; ?>">
 
-}
+                                            <input
+                                                type="hidden"
+                                                name="room_id"
+                                                value="<?php echo $row['room_id']; ?>">
 
-?>
+                                            <input
+                                                type="submit"
+                                                name="approve"
+                                                value="Approve"
+                                                class="btn btn-success btn-sm">
 
-</td>
+                                            <input
+                                                type="submit"
+                                                name="reject"
+                                                value="Reject"
+                                                class="btn btn-danger btn-sm">
 
-</tr>
+                                        </form>
 
-<?php
+                                    <?php
 
-}
+                                    }
 
-?>
+                                    ?>
 
-</table>
+                                </td>
 
-</div>
+                            </tr>
 
-</div>
+                        <?php
 
-<div class="card shadow mt-4">
+                        }
 
-<div class="card-header bg-primary text-white">
+                        ?>
 
-Current Residents
+                    </table>
 
-</div>
+                </div>
 
-<div class="card-body">
+            </div>
 
-<table class="table table-bordered">
+            <div class="card shadow mt-4">
 
-<tr>
+                <div class="card-header bg-primary text-white">
 
-<th>Resident</th>
+                    Current Residents
 
-<th>Current Room</th>
+                </div>
 
-<th>Action</th>
+                <div class="card-body">
 
-</tr>
+                    <table class="table table-bordered">
 
-<?php
+                        <tr>
 
-$residents = $conn->query("
+                            <th>Resident</th>
 
-SELECT
+                            <th>Current Room</th>
 
-users.*,
+                            <th>Action</th>
 
-rooms.room_number
+                        </tr>
 
-FROM users
+                        <?php
 
-INNER JOIN rooms
+                        $residents = $conn->query("
 
-ON users.assigned_room=rooms.room_id
+                            SELECT
 
-WHERE users.role='user'
+                            users.*,
 
-AND users.assigned_room IS NOT NULL
+                            rooms.room_number
 
-");
+                            FROM users
 
-while ($row = $residents->fetch_assoc())
+                            INNER JOIN rooms
 
-{
+                            ON users.assigned_room=rooms.room_id
 
-?>
+                            WHERE users.role='user'
 
-<tr>
+                            AND users.assigned_room IS NOT NULL
 
-<td>
+                        ");
 
-<?php echo $row['fullname']; ?>
+                        while ($row = $residents->fetch_assoc())
+                        {
 
-</td>
+                        ?>
 
-<td>
+                            <tr>
 
-<span class="room-tag"><?php echo $row['room_number']; ?></span>
+                                <td>
 
-</td>
+                                    <?php echo $row['fullname']; ?>
 
-<td>
+                                </td>
 
-<form method="POST">
+                                <td>
 
-<input
-type="hidden"
-name="user_id"
-value="<?php echo $row['id']; ?>">
+                                    <span class="room-tag"><?php echo $row['room_number']; ?></span>
 
-<input
-type="hidden"
-name="room_id"
-value="<?php echo $row['assigned_room']; ?>">
+                                </td>
 
-<input
-type="hidden"
-name="old_room"
-value="<?php echo $row['assigned_room']; ?>">
+                                <td>
 
-<select
-name="new_room"
-class="form-select mb-2">
+                                    <form method="POST">
 
-<?php
+                                        <input
+                                            type="hidden"
+                                            name="user_id"
+                                            value="<?php echo $row['id']; ?>">
 
-$roomList = $conn->query("
+                                        <input
+                                            type="hidden"
+                                            name="room_id"
+                                            value="<?php echo $row['assigned_room']; ?>">
 
-SELECT *
+                                        <input
+                                            type="hidden"
+                                            name="old_room"
+                                            value="<?php echo $row['assigned_room']; ?>">
 
-FROM rooms
+                                        <select
+                                            name="new_room"
+                                            class="form-select mb-2">
 
-");
+                                            <?php
 
-while ($room = $roomList->fetch_assoc())
+                                            $roomList = $conn->query("
 
-{
+                                                SELECT *
 
-?>
+                                                FROM rooms
 
-<option value="<?php echo $room['room_id']; ?>">
+                                            ");
 
-<?php echo $room['room_number']; ?>
+                                            while ($room = $roomList->fetch_assoc())
+                                            {
 
-</option>
+                                            ?>
 
-<?php
+                                                <option value="<?php echo $room['room_id']; ?>">
 
-}
+                                                    <?php echo $room['room_number']; ?>
 
-?>
+                                                </option>
 
-</select>
+                                            <?php
 
-<input
-type="submit"
-name="transfer"
-value="Transfer"
-class="btn btn-primary btn-sm">
+                                            }
 
-<input
-type="submit"
-name="remove"
-value="Remove"
-class="btn btn-warning btn-sm">
+                                            ?>
 
+                                        </select>
 
+                                        <input
+                                            type="submit"
+                                            name="transfer"
+                                            value="Transfer"
+                                            class="btn btn-primary btn-sm">
 
-</form>
+                                        <input
+                                            type="submit"
+                                            name="remove"
+                                            value="Remove"
+                                            class="btn btn-warning btn-sm">
 
-</td>
+                                    </form>
 
-</tr>
+                                </td>
 
-<?php
+                            </tr>
 
-}
+                        <?php
 
-?>
+                        }
 
-</table>
+                        ?>
 
-</div>
+                    </table>
 
-</div>
+                </div>
 
-<?php
+            </div>
 
-}
+        <?php
 
-?>
+        }
 
-</div>
+        ?>
+
+    </div>
 
 </body>
 

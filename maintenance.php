@@ -21,35 +21,28 @@ if (isset($_POST['submit_request']))
 
     $description = $_POST['description'];
 
-   $filename = "";
+    $filename = "";
 
-if(!empty($_FILES['image']['name']))
-{
-    if(!is_dir("uploads/maintenance"))
+    if (!empty($_FILES['image']['name']))
     {
-        mkdir(
+        if (!is_dir("uploads/maintenance"))
+        {
+            mkdir(
+                "uploads/maintenance",
+                0777,
+                true
+            );
+        }
 
-        "uploads/maintenance",
+        $filename = time() . "_" . $_FILES['image']['name'];
 
-        0777,
+        $tmp = $_FILES['image']['tmp_name'];
 
-        true
-
+        move_uploaded_file(
+            $tmp,
+            "uploads/maintenance/" . $filename
         );
     }
-
-    $filename = time()."_".$_FILES['image']['name'];
-
-    $tmp = $_FILES['image']['tmp_name'];
-
-    move_uploaded_file(
-
-    $tmp,
-
-    "uploads/maintenance/".$filename
-
-    );
-}
 
     $conn->query("
 
@@ -137,561 +130,502 @@ if ($_SESSION['role'] == "admin")
 
 <head>
 
-<title>
+    <title>
+        Maintenance
+    </title>
 
-Maintenance
+    <meta charset="UTF-8">
 
-</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1">
 
-<meta charset="UTF-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
 
-<meta
-name="viewport"
-content="width=device-width, initial-scale=1">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
 
-<link
-href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap"
-rel="stylesheet">
-
-<link
-href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-rel="stylesheet">
-
-<link
-rel="stylesheet"
-href="assets/css/style.css">
+    <link
+        rel="stylesheet"
+        href="assets/css/style.css">
 
 </head>
 
 <body>
 
-<nav class="navbar navbar-dark">
+    <nav class="navbar navbar-dark">
 
-<div class="container">
+        <div class="container">
 
-<a class="navbar-brand">
+            <a class="navbar-brand">
+                DormEase
+            </a>
 
-DormEase
+            <div>
 
-</a>
+                <a
+                    href="dashboard.php"
+                    class="btn btn-light">
 
-<div>
+                    Dashboard
 
-<a
-href="dashboard.php"
-class="btn btn-light">
+                </a>
 
-Dashboard
+            </div>
 
-</a>
+        </div>
 
-</div>
+    </nav>
 
-</div>
+    <div class="container mt-5">
 
-</nav>
+        <span class="page-eyebrow">
+            Repair Tickets
+        </span>
 
-<div class="container mt-5">
+        <?php
 
-<span class="page-eyebrow">Repair Tickets</span>
+        if ($message != "")
+        {
 
-<?php
+        ?>
 
-if ($message != "")
-{
+            <div class="alert alert-success">
 
-?>
+                <?php echo $message; ?>
 
-<div class="alert alert-success">
+            </div>
 
-<?php echo $message; ?>
+        <?php
 
-</div>
+        }
 
-<?php
+        ?>
 
-}
+        <?php
 
-?>
+        if ($_SESSION['role'] == "user")
+        {
 
-<?php
+        ?>
 
-if($_SESSION['role']=="user")
+            <div class="card shadow mb-4">
 
-{
+                <div class="card-header bg-danger text-white">
 
-?>
+                    Submit Maintenance Request
 
-<div class="card shadow mb-4">
+                </div>
 
-<div class="card-header bg-danger text-white">
+                <div class="card-body">
 
-Submit Maintenance Request
+                    <form
+                        method="POST"
+                        enctype="multipart/form-data">
 
-</div>
+                        <div class="mb-3">
 
-<div class="card-body">
+                            <label>
+                                Maintenance Type
+                            </label>
 
-<form
-method="POST"
-enctype="multipart/form-data">
+                            <select
+                                name="maintenance_type"
+                                class="form-select"
+                                required>
 
-<div class="mb-3">
+                                <option value="">
+                                    Select Type
+                                </option>
 
-<label>
+                                <option>Electrical</option>
 
-Maintenance Type
+                                <option>Plumbing</option>
 
-</label>
+                                <option>Air Conditioning</option>
 
-<select
-name="maintenance_type"
-class="form-select"
-required>
+                                <option>Door Repair</option>
 
-<option value="">
+                                <option>Window Repair</option>
 
-Select Type
+                                <option>Furniture</option>
 
-</option>
+                                <option>Internet</option>
 
-<option>
+                                <option>Others</option>
 
-Electrical
+                            </select>
 
-</option>
+                        </div>
 
-<option>
+                        <div class="mb-3">
 
-Plumbing
+                            <label>
+                                Describe The Problem
+                            </label>
 
-</option>
-
-<option>
-
-Air Conditioning
-
-</option>
-
-<option>
-
-Door Repair
-
-</option>
-
-<option>
-
-Window Repair
-
-</option>
-
-<option>
-
-Furniture
-
-</option>
-
-<option>
-
-Internet
-
-</option>
-
-<option>
-
-Others
-
-</option>
-
-</select>
-
-</div>
-
-<div class="mb-3">
-
-<label>
-
-Describe The Problem
-
-</label>
-
-<textarea
-
-name="description"
-
-class="form-control"
-
-rows="5"
-
-placeholder="Example:
+                            <textarea
+                                name="description"
+                                class="form-control"
+                                rows="5"
+                                placeholder="Example:
 
 The air conditioner in Room A101 is not cooling properly."
 
-required>
+                                required>
 
-</textarea>
+                            </textarea>
 
-</div>
+                        </div>
 
-<div class="mb-3">
+                        <div class="mb-3">
 
-<label>
+                            <label>
+                                Upload Image
+                            </label>
 
-Upload Image
+                            <input
+                                type="file"
+                                name="image"
+                                class="form-control">
 
-</label>
+                        </div>
 
-<input
-type="file"
-name="image"
-class="form-control">
+                        <input
+                            type="submit"
+                            name="submit_request"
+                            value="Submit Request"
+                            class="btn btn-danger">
 
-</div>
+                    </form>
 
-<input
-type="submit"
-name="submit_request"
-value="Submit Request"
-class="btn btn-danger">
+                </div>
 
-</form>
+            </div>
 
-</div>
+        <?php
 
-</div>
+        }
 
-<?php
+        ?>
 
-}
+        <?php
 
-?>
+        if ($_SESSION['role'] == "admin")
+        {
 
-<?php
+        ?>
 
-if ($_SESSION['role'] == "admin")
+            <div class="card shadow">
 
-{
+                <div class="card-header bg-primary text-white">
 
-?>
+                    Maintenance Management
 
-<div class="card shadow">
+                </div>
 
-<div class="card-header bg-primary text-white">
+                <div class="card-body">
 
-Maintenance Management
+                    <table class="table table-bordered">
 
-</div>
+                        <tr>
 
-<div class="card-body">
+                            <th>ID</th>
 
-<table class="table table-bordered">
+                            <th>Resident</th>
 
-<tr>
+                            <th>Type</th>
 
-<th>ID</th>
+                            <th>Description</th>
 
-<th>Resident</th>
+                            <th>Image</th>
 
-<th>Type</th>
+                            <th>Status</th>
 
-<th>Description</th>
+                            <th>Action</th>
 
-<th>Image</th>
+                        </tr>
 
-<th>Status</th>
+                        <?php
 
-<th>Action</th>
+                        $requests = $conn->query("
 
-</tr>
+                            SELECT
 
-<?php
+                            maintenance_requests.*,
 
-$requests = $conn->query("
+                            users.fullname
 
-    SELECT
+                            FROM maintenance_requests
 
-    maintenance_requests.*,
+                            INNER JOIN users
 
-    users.fullname
+                            ON maintenance_requests.user_id = users.id
 
-    FROM maintenance_requests
+                        ");
 
-    INNER JOIN users
+                        while ($row = $requests->fetch_assoc())
+                        {
 
-    ON maintenance_requests.user_id = users.id
+                        ?>
 
-");
+                            <tr>
 
-while ($row = $requests->fetch_assoc())
+                                <td>
 
-{
+                                    <span class="ledger-id">
+                                        #<?php echo $row['request_id']; ?>
+                                    </span>
 
-?>
+                                </td>
 
-<tr>
+                                <td>
 
-<td>
+                                    <?php echo $row['fullname']; ?>
 
-<span class="ledger-id">#<?php echo $row['request_id']; ?></span>
+                                </td>
 
-</td>
+                                <td>
 
-<td>
+                                    <?php echo $row['maintenance_type']; ?>
 
-<?php echo $row['fullname']; ?>
+                                </td>
 
-</td>
+                                <td>
 
-<td>
+                                    <?php echo $row['description']; ?>
 
-<?php echo $row['maintenance_type']; ?>
+                                </td>
 
-</td>
+                                <td>
 
-<td>
+                                    <?php
 
-<?php echo $row['description']; ?>
+                                    if ($row['image'] != "")
+                                    {
 
-</td>
+                                    ?>
 
-<td>
+                                        <a
+                                            href="uploads/maintenance/<?php echo $row['image']; ?>"
+                                            target="_blank">
 
-<?php
+                                            View Image
 
-if ($row['image'] != "")
+                                        </a>
 
-{
+                                    <?php
 
-?>
+                                    }
 
-<a
-href="uploads/maintenance/<?php echo $row['image']; ?>"
-target="_blank">
+                                    else
 
-View Image
+                                    {
 
-</a>
+                                        echo "—";
 
-<?php
+                                    }
 
-}
+                                    ?>
 
-else
+                                </td>
 
-{
+                                <td>
 
-echo "—";
+                                    <?php
 
-}
+                                    if ($row['status'] == "Pending")
+                                    {
+                                        echo "<span class='badge-status badge-pending'>Pending</span>";
+                                    }
+                                    elseif ($row['status'] == "In Progress")
+                                    {
+                                        echo "<span class='badge-status badge-progress'>In Progress</span>";
+                                    }
+                                    else
+                                    {
+                                        echo "<span class='badge-status badge-completed'>Completed</span>";
+                                    }
 
-?>
+                                    ?>
 
-</td>
+                                </td>
 
-<td>
+                                <td>
 
-<?php
+                                    <form method="POST">
 
-if ($row['status'] == "Pending")
-{
-echo "<span class='badge-status badge-pending'>Pending</span>";
-}
-elseif ($row['status'] == "In Progress")
-{
-echo "<span class='badge-status badge-progress'>In Progress</span>";
-}
-else
-{
-echo "<span class='badge-status badge-completed'>Completed</span>";
-}
+                                        <input
+                                            type="hidden"
+                                            name="request_id"
+                                            value="<?php echo $row['request_id']; ?>">
 
-?>
+                                        <select
+                                            name="status"
+                                            class="form-select mb-2">
 
-</td>
+                                            <option>Pending</option>
 
-<td>
+                                            <option>In Progress</option>
 
-<form method="POST">
+                                            <option>Completed</option>
 
-<input
-type="hidden"
-name="request_id"
-value="<?php echo $row['request_id']; ?>">
+                                        </select>
 
-<select
-name="status"
-class="form-select mb-2">
+                                        <input
+                                            type="submit"
+                                            name="update_status"
+                                            value="Update"
+                                            class="btn btn-success btn-sm">
 
-<option>
+                                        <a
+                                            href="maintenance.php?delete=<?php echo $row['request_id']; ?>"
+                                            class="btn btn-danger btn-sm">
 
-Pending
+                                            Delete
 
-</option>
+                                        </a>
 
-<option>
+                                    </form>
 
-In Progress
+                                </td>
 
-</option>
+                            </tr>
 
-<option>
+                        <?php
 
-Completed
+                        }
 
-</option>
+                        ?>
 
-</select>
+                    </table>
 
-<input
-type="submit"
-name="update_status"
-value="Update"
-class="btn btn-success btn-sm">
+                </div>
 
-<a
-href="maintenance.php?delete=<?php echo $row['request_id']; ?>"
-class="btn btn-danger btn-sm">
+            </div>
 
-Delete
+        <?php
 
-</a>
+        }
 
-</form>
+        else
 
-</td>
+        {
 
-</tr>
+        ?>
 
-<?php
+            <div class="card shadow">
 
-}
+                <div class="card-header bg-primary text-white">
 
-?>
+                    My Requests
 
-</table>
+                </div>
 
-</div>
+                <div class="card-body">
 
-</div>
+                    <table class="table table-bordered">
 
-<?php
+                        <tr>
 
-}
+                            <th>ID</th>
 
-else
+                            <th>Type</th>
 
-{
+                            <th>Description</th>
 
-?>
+                            <th>Status</th>
 
-<div class="card shadow">
+                        </tr>
 
-<div class="card-header bg-primary text-white">
+                        <?php
 
-My Requests
+                        $id = $_SESSION['user_id'];
 
-</div>
+                        $requests = $conn->query("
 
-<div class="card-body">
+                            SELECT *
 
-<table class="table table-bordered">
+                            FROM maintenance_requests
 
-<tr>
+                            WHERE user_id='$id'
 
-<th>ID</th>
+                        ");
 
-<th>Type</th>
+                        while ($row = $requests->fetch_assoc())
+                        {
 
-<th>Description</th>
+                        ?>
 
-<th>Status</th>
+                            <tr>
 
-</tr>
+                                <td>
 
-<?php
+                                    <span class="ledger-id">
+                                        #<?php echo $row['request_id']; ?>
+                                    </span>
 
-$id = $_SESSION['user_id'];
+                                </td>
 
-$requests = $conn->query("
+                                <td>
 
-    SELECT *
+                                    <?php echo $row['maintenance_type']; ?>
 
-    FROM maintenance_requests
+                                </td>
 
-    WHERE user_id='$id'
+                                <td>
 
-");
+                                    <?php echo $row['description']; ?>
 
-while ($row = $requests->fetch_assoc())
+                                </td>
 
-{
+                                <td>
 
-?>
+                                    <?php
 
-<tr>
+                                    if ($row['status'] == "Pending")
+                                    {
+                                        echo "<span class='badge-status badge-pending'>Pending</span>";
+                                    }
+                                    elseif ($row['status'] == "In Progress")
+                                    {
+                                        echo "<span class='badge-status badge-progress'>In Progress</span>";
+                                    }
+                                    else
+                                    {
+                                        echo "<span class='badge-status badge-completed'>Completed</span>";
+                                    }
 
-<td>
+                                    ?>
 
-<span class="ledger-id">#<?php echo $row['request_id']; ?></span>
+                                </td>
 
-</td>
+                            </tr>
 
-<td>
+                        <?php
 
-<?php echo $row['maintenance_type']; ?>
+                        }
 
-</td>
+                        ?>
 
-<td>
+                    </table>
 
-<?php echo $row['description']; ?>
+                </div>
 
-</td>
+            </div>
 
-<td>
+        <?php
 
-<?php
+        }
 
-if ($row['status'] == "Pending")
-{
-echo "<span class='badge-status badge-pending'>Pending</span>";
-}
-elseif ($row['status'] == "In Progress")
-{
-echo "<span class='badge-status badge-progress'>In Progress</span>";
-}
-else
-{
-echo "<span class='badge-status badge-completed'>Completed</span>";
-}
+        ?>
 
-?>
-
-</td>
-
-</tr>
-
-<?php
-
-}
-
-?>
-
-</table>
-
-</div>
-
-</div>
-
-<?php
-
-}
-
-?>
-
-</div>
+    </div>
 
 </body>
 
