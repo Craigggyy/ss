@@ -279,6 +279,278 @@ if ($_SESSION['role'] == "user")
   position: relative;
 }
 
+.manage-accounts-card {
+  background:
+    linear-gradient(
+      rgba(0,0,0,0.25),
+      rgba(0,0,0,0.25)
+    ),
+    url('image/b1.png') center center no-repeat !important;
+
+  background-size: cover !important;
+
+  position: relative;
+}
+
+.manage-rooms-card {
+  background:
+    linear-gradient(
+      rgba(0,0,0,0.25),
+      rgba(0,0,0,0.25)
+    ),
+    url('image/b2.png') center center no-repeat !important;
+
+  background-size: cover !important;
+
+  position: relative;
+}
+
+.room-requests-card {
+  background:
+    linear-gradient(
+      rgba(0,0,0,0.25),
+      rgba(0,0,0,0.25)
+    ),
+    url('image/b3.png') center center no-repeat !important;
+
+  background-size: cover !important;
+
+  position: relative;
+}
+
+.admin-billing-card {
+  background:
+    linear-gradient(
+      rgba(0,0,0,0.25),
+      rgba(0,0,0,0.25)
+    ),
+    url('image/b4.png') center center no-repeat !important;
+
+  background-size: cover !important;
+
+  position: relative;
+}
+
+.admin-billing-card:hover {
+  background:
+    linear-gradient(
+      rgba(255,255,255,0.20),
+      rgba(255,255,255,0.20)
+    ),
+    url('image/b4.png') center center no-repeat !important;
+
+  background-size: cover !important;
+
+  transform: translateY(-5px) scale(1.01);
+
+  box-shadow:
+    0 12px 40px rgba(0,0,0,0.25),
+    0 2px 8px rgba(0,0,0,0.15);
+}
+
+.admin-billing-card::before,
+.admin-billing-card:hover::before,
+.admin-billing-card:hover::after {
+  display: none;
+}
+
+.admin-billing-card .tile-title {
+  font-size: 34px;
+  font-weight: 800;
+
+  color: #FFFFFF;
+
+  text-shadow:
+    0 2px 8px rgba(0,0,0,0.7);
+
+  margin-top: auto;
+}
+
+.admin-billing-card .tile-tag {
+  font-size: 18px;
+  font-weight: 600;
+
+  color: #FFFFFF;
+
+  text-shadow:
+    0 2px 8px rgba(0,0,0,0.7);
+}
+
+.admin-billing-card .tile-cta {
+  font-size: 20px;
+  font-weight: 800;
+
+  color: #5AC8FA;
+
+  text-shadow:
+    0 2px 8px rgba(0,0,0,0.7);
+}
+
+.room-requests-card:hover {
+  background:
+    linear-gradient(
+      rgba(255,255,255,0.20),
+      rgba(255,255,255,0.20)
+    ),
+    url('image/b3.png') center center no-repeat !important;
+
+  background-size: cover !important;
+
+  transform: translateY(-5px) scale(1.01);
+
+  box-shadow:
+    0 12px 40px rgba(0,0,0,0.25),
+    0 2px 8px rgba(0,0,0,0.15);
+}
+
+.room-requests-card::before,
+.room-requests-card:hover::before,
+.room-requests-card:hover::after {
+  display: none;
+}
+
+.room-requests-card .tile-title {
+  font-size: 34px;
+  font-weight: 800;
+
+  color: #FFFFFF;
+
+  text-shadow:
+    0 2px 8px rgba(0,0,0,0.7);
+
+  margin-top: auto;
+}
+
+.room-requests-card .tile-tag {
+  font-size: 18px;
+  font-weight: 600;
+
+  color: #FFFFFF;
+
+  text-shadow:
+    0 2px 8px rgba(0,0,0,0.7);
+}
+
+.room-requests-card .tile-cta {
+  font-size: 20px;
+  font-weight: 800;
+
+  color: #FF9F0A;
+
+  text-shadow:
+    0 2px 8px rgba(0,0,0,0.7);
+}
+
+.manage-rooms-card:hover {
+  background:
+    linear-gradient(
+      rgba(255,255,255,0.20),
+      rgba(255,255,255,0.20)
+    ),
+    url('image/b2.png') center center no-repeat !important;
+
+  background-size: cover !important;
+
+  transform: translateY(-5px) scale(1.01);
+
+  box-shadow:
+    0 12px 40px rgba(0,0,0,0.25),
+    0 2px 8px rgba(0,0,0,0.15);
+}
+
+.manage-rooms-card::before,
+.manage-rooms-card:hover::before,
+.manage-rooms-card:hover::after {
+  display: none;
+}
+
+.manage-rooms-card .tile-title {
+  font-size: 34px;
+  font-weight: 800;
+
+  color: #FFFFFF;
+
+  text-shadow:
+    0 2px 8px rgba(0,0,0,0.7);
+
+  margin-top: auto;
+}
+
+.manage-rooms-card .tile-tag {
+  font-size: 18px;
+  font-weight: 600;
+
+  color: #FFFFFF;
+
+  text-shadow:
+    0 2px 8px rgba(0,0,0,0.7);
+}
+
+.manage-rooms-card .tile-cta {
+  font-size: 20px;
+  font-weight: 800;
+
+  color: #30D158;
+
+  text-shadow:
+    0 2px 8px rgba(0,0,0,0.7);
+}
+
+.manage-accounts-card:hover {
+  background:
+    linear-gradient(
+      rgba(255,255,255,0.20),
+      rgba(255,255,255,0.20)
+    ),
+    url('image/b1.png') center center no-repeat !important;
+
+  background-size: cover !important;
+
+  transform: translateY(-5px) scale(1.01);
+
+  box-shadow:
+    0 12px 40px rgba(0,0,0,0.25),
+    0 2px 8px rgba(0,0,0,0.15);
+}
+
+.manage-accounts-card::before,
+.manage-accounts-card:hover::before,
+.manage-accounts-card:hover::after {
+  display: none;
+}
+
+.manage-accounts-card .tile-title {
+  font-size: 34px;
+  font-weight: 800;
+
+  color: #FFFFFF;
+
+  text-shadow:
+    0 2px 8px rgba(0,0,0,0.7);
+
+  margin-top: auto;
+}
+
+.manage-accounts-card .tile-tag {
+  font-size: 18px;
+  font-weight: 600;
+
+  color: #FFFFFF;
+
+  text-shadow:
+    0 2px 8px rgba(0,0,0,0.7);
+}
+
+.manage-accounts-card .tile-cta {
+  font-size: 20px;
+  font-weight: 800;
+
+  color: #0A84FF;
+
+  text-shadow:
+    0 2px 8px rgba(0,0,0,0.7);
+}
+
 .maintenance-card:hover {
   background:
     linear-gradient(
@@ -750,37 +1022,30 @@ My Account
     <div class="row g-3">
 
       <div class="col-md-4 col-6 top-card">
-        <a href="account.php" class="tile c-blue">
-          <div class="tile-icon-wrap">👥</div>
+        <a href="account.php" class="tile c-blue manage-accounts-card">
           <div class="tile-title">Manage Accounts</div>
           <span class="tile-tag">Residents on file</span>
-          <span class="tile-cta">Open →</span>
         </a>
       </div>
 
       <div class="col-md-4 col-6 top-card">
-        <a href="manageroom.php" class="tile c-green">
+        <a href="manageroom.php" class="tile c-green manage-rooms-card">
           <div class="tile-title">Manage Rooms</div>
           <span class="tile-tag">Add, edit, retire rooms</span>
-          <span class="tile-cta">Open →</span>
         </a>
       </div>
 
       <div class="col-md-4 col-6 top-card">
-        <a href="rooms.php" class="tile c-orange">
-          <div class="tile-icon-wrap">📋</div>
+        <a href="rooms.php" class="tile c-orange room-requests-card">
           <div class="tile-title">Room Requests</div>
           <span class="tile-tag">Approve or reject</span>
-          <span class="tile-cta">Open →</span>
         </a>
       </div>
 
       <div class="col-md-6 col-6">
-        <a href="billing.php" class="tile c-teal">
-          <div class="tile-icon-wrap">🧾</div>
+        <a href="billing.php" class="tile c-teal admin-billing-card">
           <div class="tile-title">Billing</div>
           <span class="tile-tag">Track monthly dues</span>
-          <span class="tile-cta">Open →</span>
         </a>
       </div>
 
