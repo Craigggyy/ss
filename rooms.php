@@ -132,29 +132,43 @@ if ($_SESSION['role'] == "admin")
         else
 
         {
-            $conn->query("
-
-            UPDATE users
-
-            SET assigned_room='$newRoom'
-
-            WHERE id='$userID'
-
-            ");
-
             $newBill = $room['monthly_bill'];
+
+$conn->query("
+
+UPDATE users
+
+SET assigned_room='$newRoom'
+
+WHERE id='$userID'
+
+");
+
+$conn->query("
+
+UPDATE room_requests
+
+SET room_id='$newRoom',
+
+monthly_bill='$newBill'
+
+WHERE user_id='$userID'
+
+AND status='Accepted'
+
+");
+
+$month = date("F Y");
 
 $conn->query("
 
 UPDATE billing
 
-SET
-
-room_id='$newRoom',
-
-amount='$newBill'
+SET amount='$newBill'
 
 WHERE user_id='$userID'
+
+AND month='$month'
 
 ");
 
@@ -259,6 +273,71 @@ if (isset($_POST['remove']))
         WHERE id='$userID'
 
         ");
+
+        $newBill = $room['monthly_bill'];
+
+$month = date("F Y");
+
+$checkBill = $conn->query("
+
+SELECT *
+
+FROM billing
+
+WHERE user_id='$userID'
+
+AND month='$month'
+
+");
+
+if($checkBill->num_rows == 0)
+{
+    $conn->query("
+
+    INSERT INTO billing
+
+    (
+
+    user_id,
+
+    month,
+
+    amount,
+
+    status
+
+    )
+
+    VALUES
+
+    (
+
+    '$userID',
+
+    '$month',
+
+    '$newBill',
+
+    'Unpaid'
+
+    )
+
+    ");
+}
+else
+{
+    $conn->query("
+
+    UPDATE billing
+
+    SET amount='$newBill'
+
+    WHERE user_id='$userID'
+
+    AND month='$month'
+
+    ");
+}
 
        $newBill = $room['monthly_bill'];
 

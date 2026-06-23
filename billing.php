@@ -13,74 +13,7 @@ include "includes/db.php";
 
 $message = "";
 
-if ($_SESSION['role'] == "admin")
-{
-    $approved = $conn->query("
 
-        SELECT *
-
-        FROM room_requests
-
-        WHERE status='Accepted'
-
-    ");
-
-    while ($row = $approved->fetch_assoc())
-    {
-        $userID = $row['user_id'];
-
-        $month = date("F Y");
-
-        $check = $conn->query("
-
-            SELECT *
-
-            FROM billing
-
-            WHERE user_id='$userID'
-
-            AND month='$month'
-
-        ");
-
-        if ($check->num_rows == 0)
-        {
-            $amount = $row['monthly_bill'];
-
-            $conn->query("
-
-                INSERT INTO billing
-
-                (
-
-                user_id,
-
-                month,
-
-                amount,
-
-                status
-
-                )
-
-                VALUES
-
-                (
-
-                '$userID',
-
-                '$month',
-
-                '$amount',
-
-                'Unpaid'
-
-                )
-
-            ");
-        }
-    }
-}
 
 if ($_SESSION['role'] == "user")
 {

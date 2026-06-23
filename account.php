@@ -77,13 +77,45 @@ if(isset($_GET['delete']))
 
         $conn->query("
 
-            DELETE FROM users
+DELETE FROM billing
 
-            WHERE id='$deleteID'
+WHERE user_id='$deleteID'
 
-            AND role='user'
+");
 
-        ");
+$conn->query("
+
+DELETE FROM room_requests
+
+WHERE user_id='$deleteID'
+
+");
+
+$conn->query("
+
+DELETE FROM maintenance_requests
+
+WHERE user_id='$deleteID'
+
+");
+
+$conn->query("
+
+DELETE FROM login_logs
+
+WHERE user_id='$deleteID'
+
+");
+
+$conn->query("
+
+DELETE FROM users
+
+WHERE id='$deleteID'
+
+AND role='user'
+
+");
 
         header("Location: account.php");
 
