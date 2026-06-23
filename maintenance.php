@@ -163,15 +163,125 @@ rel="stylesheet">
 rel="stylesheet"
 href="assets/css/style.css">
 
+<style>
+
+.dormease-navbar{
+
+background:
+
+rgba(10,10,15,.72)!important;
+
+backdrop-filter:blur(28px);
+
+padding:0;
+
+height:90px;
+
+}
+
+.dormease-container{
+
+max-width:1000px;
+
+display:flex;
+
+align-items:center;
+
+justify-content:space-between;
+
+height:100%;
+
+}
+
+.navbar-brand{
+
+font-family:'Plus Jakarta Sans',sans-serif;
+
+font-size:30px;
+
+font-weight:800;
+
+color:#fff!important;
+
+display:flex;
+
+align-items:center;
+
+gap:10px;
+
+text-decoration:none;
+
+}
+
+.navbar-logo{
+
+width:70px;
+
+height:70px;
+
+object-fit:contain;
+
+}
+
+.header-btn{
+
+display:inline-flex;
+
+align-items:center;
+
+justify-content:center;
+
+padding:10px 24px;
+
+border-radius:999px;
+
+font-size:16px;
+
+font-weight:700;
+
+text-decoration:none;
+
+color:#fff;
+
+background:
+
+rgba(255,255,255,.10);
+
+border:1px solid rgba(255,255,255,.14);
+
+}
+
+.header-btn:hover{
+
+background:
+
+rgba(255,255,255,.18);
+
+color:#fff;
+
+}
+
+</style>
+
 </head>
 
 <body>
 
-<nav class="navbar navbar-dark">
+<nav class="navbar navbar-dark dormease-navbar">
 
-<div class="container">
+<div class="container dormease-container">
 
-<a class="navbar-brand">
+<a
+href="dashboard.php"
+class="navbar-brand">
+
+<img
+
+src="image/2.png"
+
+class="navbar-logo"
+
+>
 
 DormEase
 
@@ -180,8 +290,12 @@ DormEase
 <div>
 
 <a
+
 href="dashboard.php"
-class="btn btn-light">
+
+class="header-btn"
+
+>
 
 Dashboard
 

@@ -121,7 +121,11 @@ if (isset($_GET['delete']))
 
 <head>
 
-<title>Manage Rooms</title>
+<title>
+
+Manage Rooms
+
+</title>
 
 <meta charset="UTF-8">
 
@@ -132,32 +136,20 @@ content="width=device-width, initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 
 <link
-href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap"
 rel="stylesheet">
 
 <link
 href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
 rel="stylesheet">
 
+<link
+rel="stylesheet"
+href="assets/css/style.css">
+
 <style>
 
-body{
-
-font-family:'Plus Jakarta Sans',sans-serif;
-
-background:
-
-url('image/bg.png')
-
-center center fixed;
-
-background-size:cover;
-
-min-height:100vh;
-
-}
-
-.navbar{
+.dormease-navbar{
 
 background:
 
@@ -167,17 +159,11 @@ backdrop-filter:blur(28px);
 
 padding:0;
 
-position:sticky;
-
-top:0;
-
-z-index:200;
+height:90px;
 
 }
 
-.navbar .container{
-
-height:90px;
+.dormease-container{
 
 max-width:1000px;
 
@@ -187,9 +173,13 @@ align-items:center;
 
 justify-content:space-between;
 
+height:100%;
+
 }
 
 .navbar-brand{
+
+font-family:'Plus Jakarta Sans',sans-serif;
 
 font-size:30px;
 
@@ -217,7 +207,13 @@ object-fit:contain;
 
 }
 
-.btn-glass{
+.header-btn{
+
+display:inline-flex;
+
+align-items:center;
+
+justify-content:center;
 
 padding:10px 24px;
 
@@ -239,7 +235,7 @@ border:1px solid rgba(255,255,255,.14);
 
 }
 
-.btn-glass:hover{
+.header-btn:hover{
 
 background:
 
@@ -249,161 +245,19 @@ color:#fff;
 
 }
 
-.page-wrap{
-
-max-width:1000px;
-
-margin:auto;
-
-padding:50px 16px;
-
-}
-
-.welcome-eyebrow{
-
-font-size:11px;
-
-font-weight:700;
-
-letter-spacing:.1em;
-
-text-transform:uppercase;
-
-color:#FF375F;
-
-margin-bottom:8px;
-
-}
-
-.welcome-name{
-
-font-size:38px;
-
-font-weight:800;
-
-letter-spacing:-1px;
-
-margin-bottom:40px;
-
-}
-
-.glass-card{
-
-background:
-
-rgba(255,255,255,.92);
-
-border-radius:26px;
-
-padding:26px;
-
-box-shadow:
-
-0 10px 35px rgba(0,0,0,.15);
-
-margin-bottom:30px;
-
-}
-
-.section-title{
-
-font-size:14px;
-
-font-weight:800;
-
-letter-spacing:.08em;
-
-text-transform:uppercase;
-
-margin-bottom:20px;
-
-color:#777;
-
-}
-
-label{
-
-font-size:12px;
-
-font-weight:700;
-
-text-transform:uppercase;
-
-letter-spacing:.08em;
-
-color:#888;
-
-margin-bottom:6px;
-
-}
-
-.table th{
-
-background:
-
-linear-gradient(
-
-135deg,
-
-#141d2e,
-
-#1a2135
-
-);
-
-color:#fff;
-
-font-size:12px;
-
-font-weight:700;
-
-letter-spacing:.08em;
-
-text-transform:uppercase;
-
-padding:18px;
-
-}
-
-.table td{
-
-padding:18px;
-
-vertical-align:middle;
-
-}
-
-.table tbody tr:hover{
-
-background:#f8f9fb;
-
-}
-
-.btn-success,
-
-.btn-primary,
-
-.btn-danger{
-
-border-radius:999px;
-
-font-weight:700;
-
-padding:8px 18px;
-
-}
-
 </style>
 
 </head>
 
 <body>
 
-<nav class="navbar navbar-dark">
+<nav class="navbar navbar-dark dormease-navbar">
 
-<div class="container">
+<div class="container dormease-container">
 
-<a class="navbar-brand">
+<a
+href="dashboard.php"
+class="navbar-brand">
 
 <img
 
@@ -419,13 +273,23 @@ DormEase
 
 <div class="d-flex gap-2">
 
+<a
 
+href="rooms.php"
+
+class="header-btn"
+
+>
+
+Room Requests
+
+</a>
 
 <a
 
 href="dashboard.php"
 
-class="btn-glass"
+class="header-btn"
 
 >
 
@@ -439,24 +303,13 @@ Dashboard
 
 </nav>
 
-<div class="page-wrap">
+<div class="container mt-5">
 
-<div class="welcome-eyebrow">
-
-Room Inventory
-
-</div>
-
-<div class="welcome-name">
-
-Manage Rooms
-
-</div>
+<span class="page-eyebrow">Key Rack — Room Inventory</span>
 
 <?php
 
-if($message != "")
-
+if ($message != "")
 {
 
 ?>
@@ -473,13 +326,15 @@ if($message != "")
 
 ?>
 
-<div class="glass-card">
+<div class="card shadow mb-4">
 
-<div class="section-title">
+<div class="card-header bg-primary text-white">
 
 Add New Room
 
 </div>
+
+<div class="card-body">
 
 <form method="POST">
 
@@ -487,58 +342,53 @@ Add New Room
 
 <div class="col-md-4 mb-3">
 
-<label>Room Number</label>
+<label>
+
+Room Number
+
+</label>
 
 <input
-
 type="text"
-
 name="room_number"
-
 placeholder="Example: A101"
-
 class="form-control"
-
 required>
 
 </div>
 
 <div class="col-md-4 mb-3">
 
-<label>Capacity</label>
+<label>
+
+Capacity
+
+</label>
 
 <input
-
 type="number"
-
 name="capacity"
-
 placeholder="Number of beds"
-
 class="form-control"
-
 min="1"
-
 required>
 
 </div>
 
 <div class="col-md-4 mb-3">
 
-<label>Monthly Bill</label>
+<label>
+
+Monthly Bill
+
+</label>
 
 <input
-
 type="number"
-
 name="monthly_bill"
-
 placeholder="Amount in ₱"
-
 class="form-control"
-
 min="0"
-
 required>
 
 </div>
@@ -546,26 +396,26 @@ required>
 </div>
 
 <input
-
 type="submit"
-
 name="add_room"
-
 value="Add Room"
-
 class="btn btn-success">
 
 </form>
 
 </div>
 
-<div class="glass-card">
+</div>
 
-<div class="section-title">
+<div class="card shadow">
+
+<div class="card-header bg-danger text-white">
 
 All Rooms
 
 </div>
+
+<div class="card-body">
 
 <table class="table table-bordered">
 
@@ -589,13 +439,13 @@ All Rooms
 
 $rooms = $conn->query("
 
-SELECT *
+    SELECT *
 
-FROM rooms
+    FROM rooms
 
 ");
 
-while($row = $rooms->fetch_assoc())
+while ($row = $rooms->fetch_assoc())
 
 {
 
@@ -606,17 +456,12 @@ $formID = "room_form_".$row['room_id'];
 ?>
 
 <form
-
 id="<?php echo $formID; ?>"
-
 method="POST">
 
 <input
-
 type="hidden"
-
 name="room_id"
-
 value="<?php echo $row['room_id']; ?>">
 
 </form>
@@ -626,17 +471,11 @@ value="<?php echo $row['room_id']; ?>">
 <td>
 
 <input
-
 type="text"
-
 name="room_number"
-
 form="<?php echo $formID; ?>"
-
 value="<?php echo $row['room_number']; ?>"
-
 class="form-control form-control-sm"
-
 required>
 
 </td>
@@ -644,17 +483,12 @@ required>
 <td>
 
 <input
-
 type="number"
-
 name="capacity"
-
 form="<?php echo $formID; ?>"
-
 value="<?php echo $row['capacity']; ?>"
-
 class="form-control form-control-sm"
-
+min="1"
 required>
 
 </td>
@@ -674,17 +508,12 @@ required>
 <td>
 
 <input
-
 type="number"
-
 name="monthly_bill"
-
 form="<?php echo $formID; ?>"
-
 value="<?php echo $row['monthly_bill']; ?>"
-
 class="form-control form-control-sm"
-
+min="0"
 required>
 
 </td>
@@ -692,21 +521,14 @@ required>
 <td>
 
 <input
-
 type="submit"
-
 name="edit_room"
-
 value="Save"
-
 form="<?php echo $formID; ?>"
-
 class="btn btn-primary btn-sm">
 
 <a
-
 href="manageroom.php?delete=<?php echo $row['room_id']; ?>"
-
 class="btn btn-danger btn-sm">
 
 Delete
@@ -729,8 +551,9 @@ Delete
 
 </div>
 
+</div>
+
 </body>
 
 </html>
-
 <?php
