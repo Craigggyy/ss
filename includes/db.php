@@ -2,13 +2,13 @@
 
 $conn = new mysqli(
 
-    "localhost",
+    "sql123.infinityfree.com",
 
-    "root",
+    "if0_42254110",
 
-    "",
+    "2YOYuaIDtB8",
 
-    "dormease_db"
+    "if0_42254110_dormease"
 
 );
 
