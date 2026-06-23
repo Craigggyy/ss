@@ -102,7 +102,7 @@ status='Accepted'
 
 if ($_SESSION['role'] == "admin")
 {
-    if (isset($_POST['transfer']))
+    if(isset($_POST['transfer']))
 {
     $userID = $_POST['user_id'];
 
@@ -110,9 +110,35 @@ if ($_SESSION['role'] == "admin")
 
     $newRoom = $_POST['new_room'];
 
-    if ($oldRoom != $newRoom)
+    if($oldRoom == $newRoom)
     {
-        $conn->query("
+        $message = "Resident is already in that room.";
+    }
+
+    else
+
+    {
+        $check = $conn->query("
+
+        SELECT *
+
+        FROM rooms
+
+        WHERE room_id='$newRoom'
+
+        ");
+
+        $room = $check->fetch_assoc();
+
+        if($room['occupied'] >= $room['capacity'])
+        {
+            $message = "Room is already full.";
+        }
+
+        else
+
+        {
+            $conn->query("
 
             UPDATE users
 
@@ -120,9 +146,9 @@ if ($_SESSION['role'] == "admin")
 
             WHERE id='$userID'
 
-        ");
+            ");
 
-        $conn->query("
+            $conn->query("
 
             UPDATE rooms
 
@@ -130,9 +156,9 @@ if ($_SESSION['role'] == "admin")
 
             WHERE room_id='$oldRoom'
 
-        ");
+            ");
 
-        $conn->query("
+            $conn->query("
 
             UPDATE rooms
 
@@ -140,9 +166,10 @@ if ($_SESSION['role'] == "admin")
 
             WHERE room_id='$newRoom'
 
-        ");
+            ");
 
-        $message = "Resident transferred.";
+            $message = "Resident transferred.";
+        }
     }
 }
 
@@ -201,46 +228,67 @@ if (isset($_POST['delete_resident']))
 
     $message = "Resident deleted.";
 }
-    if (isset($_POST['approve']))
+   if(isset($_POST['approve']))
+{
+    $requestID = $_POST['request_id'];
+
+    $userID = $_POST['user_id'];
+
+    $roomID = $_POST['room_id'];
+
+    $check = $conn->query("
+
+    SELECT *
+
+    FROM rooms
+
+    WHERE room_id='$roomID'
+
+    ");
+
+    $room = $check->fetch_assoc();
+
+    if($room['occupied'] >= $room['capacity'])
     {
-        $requestID = $_POST['request_id'];
+        $message = "Room is already full.";
+    }
 
-        $userID = $_POST['user_id'];
+    else
 
-        $roomID = $_POST['room_id'];
-
+    {
         $conn->query("
 
-            UPDATE room_requests
+        UPDATE room_requests
 
-            SET status='Accepted'
+        SET status='Accepted'
 
-            WHERE request_id='$requestID'
+        WHERE request_id='$requestID'
 
         ");
 
         $conn->query("
 
-            UPDATE users
+        UPDATE users
 
-            SET assigned_room='$roomID'
+        SET assigned_room='$roomID'
 
-            WHERE id='$userID'
+        WHERE id='$userID'
 
         ");
 
         $conn->query("
 
-            UPDATE rooms
+        UPDATE rooms
 
-            SET occupied=occupied+1
+        SET occupied=occupied+1
 
-            WHERE room_id='$roomID'
+        WHERE room_id='$roomID'
 
         ");
 
         $message = "Request Approved.";
     }
+}
 
     if (isset($_POST['reject']))
     {
