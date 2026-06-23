@@ -920,6 +920,11 @@ enctype="multipart/form-data"
             required>
 
             <div class="mb-3">
+<br>
+<label class="upload-note">
+   Upload Student ID*
+
+</label>
 
 <input
 
